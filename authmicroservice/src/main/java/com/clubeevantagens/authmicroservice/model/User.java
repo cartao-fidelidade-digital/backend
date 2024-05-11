@@ -1,12 +1,18 @@
 package com.clubeevantagens.authmicroservice.model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
 @Table(name = "user", schema = "public")
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 @Entity
 public class User {
 
@@ -30,5 +36,6 @@ public class User {
     private boolean termsOfUse;
 
     @Column(name = "date_terms_of_use")
-    private Date dateTermsOfUse;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
+    private String dateTermsOfUse;
 }

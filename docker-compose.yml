@@ -1,0 +1,32 @@
+# docker-compose up -d
+
+
+version: "3.8"
+services:
+  db:
+    image: clubee/clubee.database:1.0.0
+    container_name: postgres-container
+    restart: always
+    mem_limit: 1000m 
+    ports:
+      - "5432:5432"
+    networks:
+      - minha-rede
+
+  api:
+    image: dev-clubee/clubee.database:1.0.0
+    container_name: springboot-container
+    restart: always
+    mem_limit: 2000m
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - minha-rede
+
+
+
+networks:
+  minha-rede:
+    driver: bridge

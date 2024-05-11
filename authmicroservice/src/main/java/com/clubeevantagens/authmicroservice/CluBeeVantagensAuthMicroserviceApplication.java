@@ -19,7 +19,7 @@ public class CluBeeVantagensAuthMicroserviceApplication implements WebMvcConfigu
 	public static void main(String[] args) {
 		SpringApplication.run(CluBeeVantagensAuthMicroserviceApplication.class, args);
 
-		System.out.println("Backend está ligado");
+		System.out.println("BACKEND ESTA LIGADO");
 	}
 
 }
