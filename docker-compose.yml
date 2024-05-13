@@ -14,7 +14,7 @@ services:
       - minha-rede
 
   api:
-    image: dev-clubee/clubee.database:1.0.0
+    image: clubee/clubee.backend:1.0.3
     container_name: springboot-container
     restart: always
     mem_limit: 2000m
