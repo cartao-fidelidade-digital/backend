@@ -1,6 +1,7 @@
 docker-compose-old.yml
 docker-compose-OLD.yml
 banco-de-dados/
+docker-document/
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

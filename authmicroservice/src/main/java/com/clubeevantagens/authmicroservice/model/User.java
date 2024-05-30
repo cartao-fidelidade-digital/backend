@@ -38,4 +38,11 @@ public class User {
     @Column(name = "date_terms_of_use")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private String dateTermsOfUse;
+
+    @Column(name = "cpf")
+    private String cpf;
+
+    @Column(name = "cnpj")
+    private String cnpj;
+
 }
