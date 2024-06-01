@@ -1,5 +1,8 @@
 package com.clubeevantagens.authmicroservice.service;
+import com.clubeevantagens.authmicroservice.model.Role;
 import com.clubeevantagens.authmicroservice.model.User;
+import com.clubeevantagens.authmicroservice.model.UserDTO;
+import com.clubeevantagens.authmicroservice.repository.RoleRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -17,23 +22,36 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     // CRIAR USUARIO
-    public ResponseEntity<String> registerUser(User user){
+    public ResponseEntity<String> registerUser(UserDTO userDTO){
 
         // Verifica se o email já está cadastrado
-        if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
+        if (userRepository.findUserByEmail(userDTO.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email já cadastrado");
         }
 
         // Valida CPF se não for nulo
-        if (user.getCpf() != null && !isValidCPF(user.getCpf())) {
+        if (userDTO.getCpf() != null && !isValidCPF(userDTO.getCpf())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido");
         }
 
         // Valida CNPJ se não for nulo
-        if (user.getCnpj() != null && !isValidCNPJ(user.getCnpj())) {
+        if (userDTO.getCnpj() != null && !isValidCNPJ(userDTO.getCnpj())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CNPJ inválido");
         }
+
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setTermsOfUse(userDTO.isTermsOfUse());
+        user.setDateTermsOfUse(userDTO.getDateTermsOfUse());
+        user.setCpf(userDTO.getCpf());
+        user.setCnpj(userDTO.getCnpj());
+        user.setRoles(changeListLongForRole(userDTO.getRoles()));
 
         // Salva o usuário no banco de dados
         userRepository.save(user);
@@ -51,17 +69,18 @@ public class UserService {
 
 
     // EDITAR USUARIO
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User newUser) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO newUserDTO) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setName(newUser.getName());
-            user.setEmail(newUser.getEmail());
-            user.setPassword(newUser.getPassword());
-            user.setTermsOfUse(newUser.isTermsOfUse());
-            user.setDateTermsOfUse(newUser.getDateTermsOfUse());
-            user.setCpf(newUser.getCpf());
-            user.setCnpj(newUser.getCnpj());
+            user.setName(newUserDTO.getName());
+            user.setEmail(newUserDTO.getEmail());
+            user.setPassword(newUserDTO.getPassword());
+            user.setTermsOfUse(newUserDTO.isTermsOfUse());
+            user.setDateTermsOfUse(newUserDTO.getDateTermsOfUse());
+            user.setCpf(newUserDTO.getCpf());
+            user.setCnpj(newUserDTO.getCnpj());
+            user.setRoles(changeListLongForRole(newUserDTO.getRoles()));
 
             userRepository.save(user);
             return ResponseEntity.ok(user);
@@ -146,6 +165,20 @@ public class UserService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // Converte uma lista do tipo Long para Role
+    public List<Role> changeListLongForRole(List<Long> listLong){
+        List<Role> roles = new ArrayList<>();
+
+        if(listLong != null || !listLong.isEmpty()){
+            roles = listLong
+                    .stream()
+                    .map(roleId -> roleRepository.findById(roleId).orElse(null))
+                    .collect(Collectors.toList());
+        }
+
+        return roles;
     }
 
 

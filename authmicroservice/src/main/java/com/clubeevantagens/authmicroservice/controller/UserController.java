@@ -1,5 +1,6 @@
 package com.clubeevantagens.authmicroservice.controller;
 import com.clubeevantagens.authmicroservice.model.User;
+import com.clubeevantagens.authmicroservice.model.UserDTO;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import com.clubeevantagens.authmicroservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class UserController {
 
     // CREATE
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
-        return userService.registerUser(user);
+    public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO) {
+        return userService.registerUser(userDTO);
     }
 
 
@@ -32,8 +33,8 @@ public class UserController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User newUser) {
-       return userService.updateUser(id,newUser);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO newUserDTO) {
+       return userService.updateUser(id,newUserDTO);
     }
 
     // DELETE
