@@ -1,4 +1,5 @@
-# docker build -t clubee/backend:1.0  .
+# cd C:\Users\aless\Documents\CluBee\authmicroservice
+# docker build -t java:1  .
 # mvn package -DskipTests
 
 # Estágio de compilação
