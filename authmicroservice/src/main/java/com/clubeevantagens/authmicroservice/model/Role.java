@@ -1,7 +1,10 @@
 package com.clubeevantagens.authmicroservice.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Table(name = "role", schema = "public")
 @Getter
@@ -18,4 +21,9 @@ public class Role {
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
+
 }
