@@ -11,14 +11,15 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class UserDTO {
-    private String name;
+public class ClientDTO {
+
     private String email;
     private String password;
+
+    private String name;
+    private String cpf;
+    private String phoneNumber;
     private boolean termsOfUse;
     private String dateTermsOfUse;
-    private String cpf;
-    private String cnpj;
-    private List<Long> roles; // Lista de IDs de roles
 
 }
