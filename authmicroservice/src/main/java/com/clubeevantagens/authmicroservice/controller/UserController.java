@@ -1,4 +1,5 @@
 package com.clubeevantagens.authmicroservice.controller;
+import com.clubeevantagens.authmicroservice.model.ClientDTO;
 import com.clubeevantagens.authmicroservice.model.User;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import com.clubeevantagens.authmicroservice.service.UserService;
@@ -16,5 +17,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // LOGIN
+    @PostMapping("/login")
+    public ResponseEntity<String> registerClient(@RequestBody User user) {
+        return userService.loginUser(user);
+    }
 
 }

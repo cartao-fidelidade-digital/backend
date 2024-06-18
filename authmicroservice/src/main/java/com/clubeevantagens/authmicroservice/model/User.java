@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 
-@Table(name = "user", schema = "public")
+@Table(name = "users", schema = "public")
 @Getter
 @Setter
 @ToString
@@ -28,5 +28,4 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
-
 }
