@@ -44,4 +44,21 @@ public class User {
                     unique = false,
                     table = "role"))
     private List<Role> roles;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "reset_password_expiry_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
+    private Date resetPasswordExpiryDate;
+
+    public Date calculateExpiryDate(int expiryTimeInMinutes) {
+        Date now = new Date();
+        return new Date(now.getTime() + (expiryTimeInMinutes * 60 * 1000));
+    }
+
+    public boolean isExpired() {
+        return new Date().after(this.resetPasswordExpiryDate);
+    }
 }

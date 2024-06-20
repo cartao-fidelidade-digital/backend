@@ -3,7 +3,7 @@
 
 services:
   db:
-    image: clubee/clubee.database:1.0.2
+    image: clubee/clubee.database:1.0.3
     container_name: postgres-container
     restart: always
     mem_limit: 1000m 
@@ -14,7 +14,7 @@ services:
     
 
   api:
-    image: clubee/clubee.backend:1.0.5
+    image: clubee/clubee.backend:1.0.6
     container_name: springboot-container
     restart: always
     mem_limit: 2000m
