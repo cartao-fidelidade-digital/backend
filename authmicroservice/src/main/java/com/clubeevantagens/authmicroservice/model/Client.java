@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Table(name = "client", schema = "public")
 @Getter
 @Setter
@@ -32,9 +34,10 @@ public class Client {
     @Column(name = "terms_of_use", nullable = false)
     private boolean termsOfUse;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_terms_of_use")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private String dateTermsOfUse;
+    private Date dateTermsOfUse;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)

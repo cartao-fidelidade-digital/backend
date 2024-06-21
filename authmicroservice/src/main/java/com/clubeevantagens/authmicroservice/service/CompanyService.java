@@ -64,6 +64,8 @@ public class CompanyService {
         company.setCnpj(companyDTO.getCnpj());
         company.setType(companyDTO.getType());
         company.setContactPhone(companyDTO.getContactPhone());
+        company.setTermsOfUse(companyDTO.isTermsOfUse());
+        company.setDateTermsOfUse(companyDTO.getDateTermsOfUse());
         // Salva "Company" no banco
         companyRepository.save(company);
 
