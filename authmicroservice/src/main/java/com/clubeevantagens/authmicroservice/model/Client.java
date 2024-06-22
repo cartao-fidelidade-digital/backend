@@ -38,14 +38,13 @@ public class Client {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_terms_of_use")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private Date dateTermsOfUse;
+    private LocalDateTime dateTermsOfUse;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Date dateNow() {
-        Date now = new Date();
-        return new Date(now.getTime());
+    public LocalDateTime dateNow() {
+        return LocalDateTime.now();
     }
 }
