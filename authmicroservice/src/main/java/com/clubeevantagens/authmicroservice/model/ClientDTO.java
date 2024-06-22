@@ -25,8 +25,6 @@ public class ClientDTO {
     private String phoneNumber;
     private boolean termsOfUse;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private Date dateTermsOfUse;
+    private String dateTermsOfUse;
 
 }

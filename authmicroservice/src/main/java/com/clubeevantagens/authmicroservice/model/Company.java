@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Table(name = "company", schema = "public")
@@ -48,4 +49,9 @@ public class Company {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Date dateNow() {
+        Date now = new Date();
+        return new Date(now.getTime());
+    }
 }

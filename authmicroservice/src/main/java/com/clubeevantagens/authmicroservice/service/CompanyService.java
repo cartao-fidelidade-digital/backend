@@ -1,7 +1,6 @@
 package com.clubeevantagens.authmicroservice.service;
 
 import com.clubeevantagens.authmicroservice.model.*;
-import com.clubeevantagens.authmicroservice.repository.ClientRepository;
 import com.clubeevantagens.authmicroservice.repository.CompanyRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,7 +66,7 @@ public class CompanyService {
         company.setType(companyDTO.getType());
         company.setContactPhone(companyDTO.getContactPhone());
         company.setTermsOfUse(companyDTO.isTermsOfUse());
-        company.setDateTermsOfUse(companyDTO.getDateTermsOfUse());
+        company.setDateTermsOfUse(company.dateNow());
         // Salva "Company" no banco
         companyRepository.save(company);
 
@@ -76,9 +77,26 @@ public class CompanyService {
 
 
     // BUSCAR TODOS AS EMPRESAS
-    public ResponseEntity<List<Company>> getAllCompanies() {
+    public ResponseEntity<?> getAllCompanies() {
         List<Company> companies = companyRepository.findAll();
-        return ResponseEntity.ok(companies);
+
+        List<CompanyDTO> retorno = new ArrayList<>();
+
+        for(Company c : companies){
+            CompanyDTO cAux = new CompanyDTO();
+            cAux.setCompanyName(c.getCompanyName());
+            cAux.setPassword(c.getUser().getPassword());
+            cAux.setEmail(c.getUser().getEmail());
+            cAux.setCpf(c.getCpf());
+            cAux.setContactPhone(c.getContactPhone());
+            cAux.setTermsOfUse(c.isTermsOfUse());
+            cAux.setCnpj(c.getCnpj());
+            cAux.setType(c.getType());
+            cAux.setDateTermsOfUse(c.getDateTermsOfUse().toString());
+
+            retorno.add(cAux);
+        }
+        return ResponseEntity.ok(retorno);
     }
 
 

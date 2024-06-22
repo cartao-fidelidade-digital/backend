@@ -24,7 +24,7 @@ public class ClientController {
 
     // READ
     @GetMapping
-    public ResponseEntity<List<Client>> getAllClient() {
+    public ResponseEntity<?> getAllClient() {
         return clientService.getAllClients();
     }
 

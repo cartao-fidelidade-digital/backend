@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +58,7 @@ public class ClientService {
         client.setCpf(clientDTO.getCpf());
         client.setPhoneNumber(clientDTO.getPhoneNumber());
         client.setTermsOfUse(clientDTO.isTermsOfUse());
-        client.setDateTermsOfUse(clientDTO.getDateTermsOfUse());
+        client.setDateTermsOfUse(client.dateNow());
 
         // Salva "Client" no banco
         clientRepository.save(client);
@@ -67,9 +70,26 @@ public class ClientService {
 
 
     // BUSCAR TODOS OS CLIENTES
-    public ResponseEntity<List<Client>> getAllClients() {
+    public ResponseEntity<?> getAllClients() {
+
         List<Client> clients = clientRepository.findAll();
-        return ResponseEntity.ok(clients);
+        List<ClientDTO> retorno = new ArrayList<>();
+
+        for(Client c : clients){
+            ClientDTO cAux = new ClientDTO();
+            cAux.setName(c.getName());
+            cAux.setPassword(c.getUser().getPassword());
+            cAux.setEmail(c.getUser().getEmail());
+            cAux.setCpf(c.getCpf());
+            cAux.setPhoneNumber(c.getPhoneNumber());
+            cAux.setTermsOfUse(c.isTermsOfUse());
+            cAux.setDateTermsOfUse(c.getDateTermsOfUse().toString());
+
+            retorno.add(cAux);
+        }
+
+
+        return ResponseEntity.ok(retorno);
     }
 
 

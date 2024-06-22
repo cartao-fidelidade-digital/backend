@@ -27,8 +27,6 @@ public class CompanyDTO {
     private String type;
     private boolean termsOfUse;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private Date dateTermsOfUse;
+    private String dateTermsOfUse;
 
 }

@@ -24,7 +24,7 @@ public class CompanyController {
 
     // READ
     @GetMapping
-    public ResponseEntity<List<Company>> getAllCompanies() {
+    public ResponseEntity<?> getAllCompanies() {
         return companyService.getAllCompanies();
     }
 
