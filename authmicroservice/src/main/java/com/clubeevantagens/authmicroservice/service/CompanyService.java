@@ -36,11 +36,6 @@ public class CompanyService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email já cadastrado");
         }
 
-        // Verifica se ambos CPF e CNPJ são nulos
-        if (companyDTO.getCpf() == null && companyDTO.getCnpj() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF ou CNPJ deve ser fornecido");
-        }
-
         // Valida CPF se não for nulo
         if (companyDTO.getCpf() != null && !isValidCPF(companyDTO.getCpf())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido");
