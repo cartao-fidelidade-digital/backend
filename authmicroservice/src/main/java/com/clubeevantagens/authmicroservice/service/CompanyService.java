@@ -48,6 +48,12 @@ public class CompanyService {
 
 
         User user = new User();
+
+        // Valida Senha
+        if(!user.isValidPassword(companyDTO.getPassword()) ){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sua senha precisa conter 8 a 20 caracteres incluindo números, letras maiúsculas e minúsculas e caracteres especiais");
+        }
+
         user.setEmail(companyDTO.getEmail());
         user.setPassword(companyDTO.getPassword());
         // Salva "User" no banco

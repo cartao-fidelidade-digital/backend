@@ -53,12 +53,45 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime resetPasswordExpiryDate;
 
+    // CRIA DATA DE "resetPasswordExpiryDate" PARA 48h SEGUINTES
     public LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
         LocalDateTime now = LocalDateTime.now();
         return now.plusMinutes(expiryTimeInMinutes);
     }
 
+    // VERIFICA DATA DE "resetPasswordExpiryDate"
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(this.resetPasswordExpiryDate);
+    }
+
+    // VALIDA SENHA
+    public boolean isValidPassword(String password) {
+        // Verifica se a senha tem entre 8 e 20 caracteres
+        if (password.length() < 8 || password.length() > 20) {
+            return false;
+        }
+
+        // Verifica se a senha contém pelo menos uma letra maiúscula
+        if (!password.matches(".*[A-Z].*")) {
+            return false;
+        }
+
+        // Verifica se a senha contém pelo menos uma letra minúscula
+        if (!password.matches(".*[a-z].*")) {
+            return false;
+        }
+
+        // Verifica se a senha contém pelo menos um número
+        if (!password.matches(".*\\d.*")) {
+            return false;
+        }
+
+        // Verifica se a senha contém pelo menos um caractere especial
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")) {
+            return false;
+        }
+
+        // Se passar todas as verificações, a senha é válida
+        return true;
     }
 }

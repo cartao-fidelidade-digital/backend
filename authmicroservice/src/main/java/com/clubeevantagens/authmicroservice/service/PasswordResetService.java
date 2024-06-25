@@ -55,6 +55,12 @@ public class PasswordResetService {
         if(userOptional.isPresent() ){// token existe
 
             User u = userOptional.get();
+
+            // Valida Senha
+            if(!u.isValidPassword(newPassword) ){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sua senha precisa conter 8 a 20 caracteres incluindo números, letras maiúsculas e minúsculas e caracteres especiais.");
+            }
+
             if(!u.isExpired()){// token valido
                 u.setPassword(newPassword);
                 u.setResetPasswordExpiryDate(null);

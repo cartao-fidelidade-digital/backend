@@ -47,6 +47,11 @@ public class ClientService {
 
 
         User user = new User();
+
+        // Valida Senha
+        if(!user.isValidPassword(clientDTO.getPassword()) ){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sua senha precisa conter 8 a 20 caracteres incluindo números, letras maiúsculas e minúsculas e caracteres especiais.");
+        }
         user.setEmail(clientDTO.getEmail());
         user.setPassword(clientDTO.getPassword());
         // Salva "User" no banco
