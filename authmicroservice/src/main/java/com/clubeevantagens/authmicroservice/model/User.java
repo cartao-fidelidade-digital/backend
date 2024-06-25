@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 @Table(name = "users", schema = "public")
@@ -93,5 +94,22 @@ public class User {
 
         // Se passar todas as verificações, a senha é válida
         return true;
+    }
+
+    // VALIDA EMAIL
+    public boolean isValidEmail(String email) {
+        // Regex para verificar o formato do email
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+        // Compilar a regex em um padrão
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        // Se o email for nulo, retorna falso
+        if (email == null) {
+            return false;
+        }
+
+        // Retorna se o email corresponde ao padrão
+        return pattern.matcher(email).matches();
     }
 }

@@ -48,6 +48,10 @@ public class ClientService {
 
         User user = new User();
 
+        // Valida Email
+        if(!user.isValidEmail(clientDTO.getEmail())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email inválido");
+        }
         // Valida Senha
         if(!user.isValidPassword(clientDTO.getPassword()) ){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sua senha precisa conter 8 a 20 caracteres incluindo números, letras maiúsculas e minúsculas e caracteres especiais.");
