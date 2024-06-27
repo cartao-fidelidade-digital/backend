@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - minha-rede
+      - rede-clubee
     
 
   api:
@@ -23,10 +23,9 @@ services:
     depends_on:
       - db
     networks:
-      - minha-rede
-
+      - rede-clubee
 
 
 networks:
-  minha-rede:
+  rede-clubee:
     driver: bridge

@@ -1,5 +1,6 @@
 package com.clubeevantagens.authmicroservice.service;
 
+import com.clubeevantagens.authmicroservice.messager.EmailProducer;
 import com.clubeevantagens.authmicroservice.model.User;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class PasswordResetService {
     private UserRepository userRepository;
 
     @Autowired
-    private EmailService emailService;
+    private EmailProducer emailProducer;
 
     // ENVIAR "TOKEN" PARA EMAIL
     public ResponseEntity<?> sendPasswordResetTokenToEmail(String email)  {
@@ -32,12 +33,13 @@ public class PasswordResetService {
 
             userRepository.save(u);// salva "token" em "User"
 
-            String resp = emailService.sendSimpleEmail(email, "Redefinição de Senha",
-                    "Para resetar sua senha use o codigo abaixo:\n" + token + "\n\n\n" +
-                            "Se você não fez uma solicitação, pode ignorar este e-mail.\n\n" +
-                            "IMPORTANTE: Esse link possui validade de 48 horas, após esse prazo, solicite uma nova redefinição de senha repetindo o processo realizado.");
+            String emailBody = "Para resetar sua senha use o codigo abaixo:\n" + token + "\n\n\n" +
+                    "Se você não fez uma solicitação, pode ignorar este e-mail.\n\n" +
+                    "IMPORTANTE: Esse link possui validade de 48 horas, após esse prazo, solicite uma nova redefinição de senha repetindo o processo realizado.";
 
-            return ResponseEntity.ok().body(resp);
+            emailProducer.sendEmailMessage(email, "Redefinição de Senha", emailBody);
+
+            return ResponseEntity.ok().body("Solicitação de redefinição realizada. Voce recebera um email em alguns minutos");
         }else{// email não existe
             return ResponseEntity.notFound().build();
         }
