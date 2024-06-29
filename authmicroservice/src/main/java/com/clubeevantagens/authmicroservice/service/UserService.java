@@ -4,9 +4,14 @@ import com.clubeevantagens.authmicroservice.model.Company;
 import com.clubeevantagens.authmicroservice.model.User;
 import com.clubeevantagens.authmicroservice.repository.ClientRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
+import com.clubeevantagens.authmicroservice.security.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +29,12 @@ public class UserService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private UserDetailService userDetailService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // DELETAR USER
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         Optional<User> userOptional = userRepository.findById(id);
@@ -36,20 +47,24 @@ public class UserService {
     }
 
     // LOGIN USER
-    public ResponseEntity<String> loginUser(User user){
+    public ResponseEntity<?> loginUser(User user){
 
-        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
+        try {
+            UserDetails userDetails = userDetailService.loadUserByUsername(user.getEmail());// valida email
 
-        if (userOptional.isPresent()) {// email existe
-            User u = userOptional.get();
+            //user.setPassword(passwordEncoder.encode(user.getPassword()) );// criptografa password
 
-            if(!u.getPassword().equals(user.getPassword()) ){// senha incorreta
+            if (passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {// valida password
+                return ResponseEntity.ok().build();
+            } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email ou Senha incorreta");
             }
 
-            return ResponseEntity.ok().build();
-        } else {// email nao existe
+        } catch (UsernameNotFoundException e) {// email nao encontrado
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email ou Senha incorreta");
+        } catch (Exception e1){ // outros erros
+            e1.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu um erro inesperado");
         }
     }
 

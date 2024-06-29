@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -112,4 +113,10 @@ public class User {
         // Retorna se o email corresponde ao padrão
         return pattern.matcher(email).matches();
     }
+
+    // CRIPTOGRAFA PASSWORD
+    public String encodePassword(String password){
+        return new BCryptPasswordEncoder().encode(password);
+    }
+
 }

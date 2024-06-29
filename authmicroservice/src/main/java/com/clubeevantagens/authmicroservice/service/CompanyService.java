@@ -6,6 +6,7 @@ import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,7 +60,14 @@ public class CompanyService {
         }
 
         user.setEmail(companyDTO.getEmail());
-        user.setPassword(companyDTO.getPassword());
+        user.setPassword(user.encodePassword(companyDTO.getPassword()));// criptografa password
+
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role(2L,"COMPANY",null));
+
+        // add roles
+        user.setRoles(roles);
+
         // Salva "User" no banco
         userRepository.save(user);
 

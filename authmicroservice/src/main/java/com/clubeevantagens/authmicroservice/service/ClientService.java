@@ -1,14 +1,12 @@
 package com.clubeevantagens.authmicroservice.service;
 
-import com.clubeevantagens.authmicroservice.model.Client;
-import com.clubeevantagens.authmicroservice.model.ClientDTO;
-import com.clubeevantagens.authmicroservice.model.Company;
-import com.clubeevantagens.authmicroservice.model.User;
+import com.clubeevantagens.authmicroservice.model.*;
 import com.clubeevantagens.authmicroservice.repository.ClientRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +29,9 @@ public class ClientService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // CRIAR CLIENTE
     public ResponseEntity<String> registerClient(ClientDTO clientDTO){
@@ -57,7 +58,14 @@ public class ClientService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sua senha precisa conter 8 a 20 caracteres incluindo números, letras maiúsculas e minúsculas e caracteres especiais.");
         }
         user.setEmail(clientDTO.getEmail());
-        user.setPassword(clientDTO.getPassword());
+        user.setPassword(user.encodePassword(clientDTO.getPassword()));
+
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role(1L,"CLIENT",null));
+
+        // add roles
+        user.setRoles(roles);
+
         // Salva "User" no banco
         userRepository.save(user);
 
