@@ -15,11 +15,7 @@ public class ApplicationStartup {
 
     @EventListener(ApplicationReadyEvent.class)
     public void insertDataOnStartup() { // Realiza alguma ação ao iniciar o Spring
-        Role client = new Role(1L,"CLIENT",null);
-        Role company = new Role(2L,"COMPANY",null);
 
-        roleRepository.save(client);
-        roleRepository.save(company);
     }
 
 }

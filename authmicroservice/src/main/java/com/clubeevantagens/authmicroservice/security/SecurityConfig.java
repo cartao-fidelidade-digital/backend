@@ -53,11 +53,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/users/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users/company/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users/client/register").permitAll()
-                        .requestMatchers(HttpMethod.PUT,"/api/users/client/{id}").hasAuthority("SCOPE_CLIENT")
-                        .requestMatchers(HttpMethod.DELETE,"/api/users/client/{id}").hasAuthority("SCOPE_CLIENT")
-                        .requestMatchers(HttpMethod.PUT,"/api/users/company/{id}").hasAuthority("SCOPE_COMPANY")
-                        .requestMatchers(HttpMethod.DELETE,"/api/users/company/{id}").hasAuthority("SCOPE_COMPANY")
-
+                        .requestMatchers(HttpMethod.PUT,"/api/users/client/{id}").hasAnyAuthority("SCOPE_CLIENT","SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/users/client/{id}").hasAnyAuthority("SCOPE_CLIENT","SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/users/company/{id}").hasAnyAuthority("SCOPE_COMPANY","SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/users/company/{id}").hasAnyAuthority("SCOPE_COMPANY","SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/users/client/").hasAnyAuthority("SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/users/company/").hasAnyAuthority("SCOPE_ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(
