@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -30,7 +31,7 @@ public class CluBeeVantagensAuthMicroserviceApplication implements WebMvcConfigu
 		registry.addMapping("/**")
 				.allowedMethods("*")
 				.allowedHeaders("*")
-				.allowedOrigins("http://localhost:5173", "http://localhost:8081");
+				.allowedOrigins("http://localhost:5173", "http://localhost:8081","http://localhost:3000");
 
 
 	}
