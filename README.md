@@ -8,6 +8,8 @@ O backend da Clubee é a espinha dorsal do sistema, responsável por gerenciar e
 - **Spring Framework:** Utilizamos o Spring Framework para criar aplicativos Java empresariais de forma rápida e com menos código, aproveitando seus recursos como injeção de dependência, controle transacional e segurança
 - **Banco de Dados PostgreSQL:** O PostgreSQL é utilizado como o sistema de gerenciamento de banco de dados relacional. Ele oferece confiabilidade, desempenho e uma ampla gama de recursos para garantir a integridade e eficiência dos dados
 
+<br>
+<br>
 
 ## Como executar o Backend localmente?
 
@@ -15,8 +17,14 @@ Para executar o backend da Clubee localmente, você pode usar o Docker, uma plat
 
 Para instruções de instalação, veja [instruções de instalação](./markdown/installation.md).
 
+<br>
+<br>
+
 ## Quais são os Endpoints do Backend?
 
 Endpoints são URLs específicas onde uma API recebe solicitações e retorna respostas, permitindo a comunicação entre diferentes partes de um sistema. Eles definem as operações que podem ser realizadas, como obter, criar, atualizar ou excluir dados. Abaixo, listamos as páginas para acessar a documentação dos endpoints de cada entidade no sistema Clubee.
 
 Para mais detalhes sobre a API, veja a [documentação de API](./markdown/api-documentation.md).
+
+<br>
+<br>
