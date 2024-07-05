@@ -1,6 +1,7 @@
 package com.clubeevantagens.authmicroservice.service;
 
 import com.clubeevantagens.authmicroservice.model.Company;
+import com.clubeevantagens.authmicroservice.security.UserDetail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import com.clubeevantagens.authmicroservice.model.User;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -55,6 +57,7 @@ public class UserService {
     }
 
     // LOGIN USER
+    @Transactional
     public ResponseEntity<?> loginUser(User user){
 
         try {
@@ -62,11 +65,15 @@ public class UserService {
 
             if (passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {// valida password
 
-                var tokenSession = jwtUtils.generateToken(userDetails);// gera "TokenSession"
+                var accessToken = jwtUtils.generateAccessToken(userDetails);// gera "accessToken"
+                var refreshToken = jwtUtils.generateRefreshToken(accessToken); // gera "refreshToken"
 
-                Map<String, String> payload = new HashMap<>();
-                payload.put("tokenSession",tokenSession);
-                payload.put("expiryTokenInSeconds",expiryToken.toString());
+                userRepository.updateRefreshTokenByEmail(
+                        user.getEmail(), Integer.parseInt(refreshToken.get("key")));// salva "key" no banco
+
+                Map<String, String> payload = new HashMap<>();// retorno
+                payload.put("accessToken",accessToken);
+                payload.put("refreshToken", refreshToken.get("refreshToken"));
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(payload);
             } else {
@@ -82,4 +89,50 @@ public class UserService {
     }
 
 
+    // NEW TOKEN
+    @Transactional
+    public ResponseEntity<?> newToken(String expiredAccessToken, String refreshToken) {
+
+        Map<String, String> accessTokenMap = jwtUtils.extractAccessToken(expiredAccessToken);// extrair accessToken
+        var accessIssuedAt =  accessTokenMap.get("iat");
+        var accessExpiredAt = accessTokenMap.get("exp");
+        var accessSub = accessTokenMap.get("sub");
+
+        Map<String, String> refreshTokenMap = jwtUtils.extractRefreshToken(refreshToken);// extrair refreshToken
+        var refreshKey = refreshTokenMap.get("key");
+        var refreshSignature = refreshTokenMap.get("signature");
+        var refreshSub = refreshTokenMap.get("sub");
+
+        var signatureRaw = ""+refreshKey + accessIssuedAt + accessExpiredAt;// assinatura
+
+        if(refreshSub.equals(accessSub) && new BCryptPasswordEncoder().matches(signatureRaw, refreshSignature)){// valida "sub" e "signature"
+
+            var key = userRepository.findRefreshTokenById(Long.valueOf(refreshSub));// pega "key" do banco
+
+            if(refreshKey.equals(key.get().toString())){// compara "key" do banco com "key" do client
+
+                var userOptional = userRepository.findById(Long.valueOf(accessSub));
+                UserDetails userDetails = new UserDetail(userOptional.get());
+
+                var accessToken = jwtUtils.generateAccessToken(userDetails);// gera "accessToken"
+                var refreshTokenn = jwtUtils.generateRefreshToken(accessToken); // gera "refreshToken"
+
+                userRepository.updateRefreshTokenByEmail(
+                        userOptional.get().getEmail(), Integer.parseInt(refreshTokenn.get("key")));// salva "key" no banco
+
+                Map<String, String> payload = new HashMap<>();// retorno
+                payload.put("newAccessToken",accessToken);
+                payload.put("newRefreshToken", refreshTokenn.get("refreshToken"));
+
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(payload);
+
+            }else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("access-token ou refresh-token invalido ");
+            }
+
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("access-token ou refresh-token invalido ");
+        }
+
+    }
 }

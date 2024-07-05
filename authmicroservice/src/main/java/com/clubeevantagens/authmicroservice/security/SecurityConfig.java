@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/users/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users/company/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users/client/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/users/newtoken").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/api/users/client/{id}").hasAnyAuthority("SCOPE_CLIENT","SCOPE_ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/users/client/{id}").hasAnyAuthority("SCOPE_CLIENT","SCOPE_ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/users/company/{id}").hasAnyAuthority("SCOPE_COMPANY","SCOPE_ADMIN")

@@ -55,6 +55,9 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime resetPasswordExpiryDate;
 
+    @Column(name = "refresh_token_key")
+    private int refreshToken;
+
     // CRIA DATA DE "resetPasswordExpiryDate" PARA 48h SEGUINTES
     public LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
         LocalDateTime now = LocalDateTime.now();

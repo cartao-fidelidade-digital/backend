@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,6 +22,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> registerClient(@RequestBody User user) {
         return userService.loginUser(user);
+    }
+
+    @PostMapping("/newtoken")
+    public ResponseEntity<?> newToken(@RequestBody Map<String, String> payload) {
+        String expiredAccessToken = payload.get("expiredAccessToken");
+        String refreshToken = payload.get("refreshToken");
+        return userService.newToken(expiredAccessToken,refreshToken);
     }
 
 }
