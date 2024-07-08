@@ -53,10 +53,8 @@ Para realizar a autenticação e necessário fazer o login e armazenar o "access
 
 *Saída*:
 
-```json
-{
-    "saida-exemplo":"value"
-}
+```text
+saída realizada com sucesso
 ```      
       
 <br>
@@ -68,11 +66,22 @@ Para realizar a autenticação e necessário fazer o login e armazenar o "access
 
 ### 1. Mostrar todos os Clientes.
 
- *Entrada*:
+*Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
+}
+```
+> role: admin
 
+<br>
+
+*Entrada*:
 `GET` - localhost:8080/api/users/client
 
- *Saída*:
+<br>
+
+*Saída*:
 
 ```json
 [
@@ -110,8 +119,9 @@ Para realizar a autenticação e necessário fazer o login e armazenar o "access
 ### 2. Cadastrar Cliente.
 
 *Entrada*:
-
 `POST` - localhost:8080/api/users/client/register
+
+<br>
 
 *Body*:
 
@@ -127,9 +137,11 @@ Para realizar a autenticação e necessário fazer o login e armazenar o "access
 }
 ```
 
- *Saída*:
+<br>
 
-```
+*Saída*:
+
+```text
 Usuario salvo com sucesso
 ```
 
@@ -137,9 +149,20 @@ Usuario salvo com sucesso
 
 ### 3. Editar Cliente.
 
-*Entrada*:
+*Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
+}
+```
+> role: client
 
-`PUT` - localhost:8080/api/users/1
+<br>
+
+*Entrada*:
+`PUT` - localhost:8080/api/users/client
+
+<br>
 
 *Body*:
 
@@ -151,9 +174,11 @@ Usuario salvo com sucesso
 }
 ```
 
- *Saída*:
+<br>
 
-```json
+*Saída*:
+
+```text
 Cliente editado com sucesso
 ```
 
@@ -161,12 +186,22 @@ Cliente editado com sucesso
 
 ### 4. Deleta Cliente.
 
+*Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
+}
+```
+> role: client
+
+<br>
+
 *Entrada*:
 
-`DELETE` - localhost:8080/api/users/client/1
+`DELETE` - localhost:8080/api/users/client
 
 *Saída*:
-```json
+```text
 
 ```    
   
@@ -179,11 +214,22 @@ Cliente editado com sucesso
 
 ### 1. Mostrar todas as Empresas.
 
- *Entrada*:
+*Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
+}
+```
+> role: admin
 
+<br>
+
+*Entrada*:
 `GET` - localhost:8080/api/users/company
 
- *Saída*:
+<br>
+
+*Saída*:
 
 ```json
 [
@@ -225,8 +271,9 @@ Cliente editado com sucesso
 ### 2. Cadastrar Empresa.
 
 *Entrada*:
-
 `POST` - localhost:8080/api/users/company/register
+
+<br>
 
 *Body*:
 
@@ -244,9 +291,11 @@ Cliente editado com sucesso
 }
 ```
 
- *Saída*:
+<br>
 
-```
+*Saída*:
+
+```text
 Empresa salva com sucesso
 ```
 
@@ -254,9 +303,20 @@ Empresa salva com sucesso
 
 ### 3. Editar Empresa.
 
-*Entrada*:
+*Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
+}
+```
+> role: company
 
-`PUT` - localhost:8080/api/users/company/1
+<br>
+
+*Entrada*:
+`PUT` - localhost:8080/api/users/company
+
+<br>
 
 *Body*:
 
@@ -270,9 +330,11 @@ Empresa salva com sucesso
 }
 ```
 
- *Saída*:
+<br>
 
-```json
+*Saída*:
+
+```text
 Empresa editada com sucesso
 ```
 
@@ -280,13 +342,24 @@ Empresa editada com sucesso
 
 ### 4. Deleta Empresa.
 
-*Entrada*:
+*Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
+}
+```
+> role: company
 
-`DELETE` - localhost:8080/api/users/company/1
+<br>
+
+*Entrada*:
+`DELETE` - localhost:8080/api/users/company
+
+<br>
 
 *Saída*:
 
-```json
+```text
 
 ```
 
@@ -299,8 +372,9 @@ Empresa editada com sucesso
 ### 1. Logar Usuário.
 
 *Entrada*:
-
 `POST` - localhost:8080/api/users/login
+
+<br>
 
 *Body*:
 
@@ -311,7 +385,9 @@ Empresa editada com sucesso
 }
 ```
 
- *Saída*:
+<br>
+
+*Saída*:
 
 ```json
 {
@@ -326,8 +402,9 @@ Empresa editada com sucesso
 ### 2. Novo Token.
 
 *Entrada*:
-
 `POST` - localhost:8080/api/users/newtoken
+
+<br>
 
 *Body*:
 
@@ -338,7 +415,9 @@ Empresa editada com sucesso
 }
 ```
 
- *Saída*:
+<br>
+
+*Saída*:
 
 ```json
 {
@@ -353,8 +432,9 @@ Empresa editada com sucesso
 ### 3. Esqueci senha.
 
 *Entrada*:
-
 `POST` - localhost:8080/api/password/forgot
+
+<br>
 
 *Body*:
 
@@ -364,17 +444,20 @@ Empresa editada com sucesso
 }
 ```
 
- *Saída*:
+<br>
 
-```json
+*Saída*:
+
+```text
 Solicitação de redefinição realizada. Voce recebera um email em alguns minutos
 ```
 
 ### 4. Resetar Senha.
 
 *Entrada*:
-
 `POST` - localhost:8080/api/password/reset
+
+<br>
 
 *Body*:
 
@@ -385,10 +468,12 @@ Solicitação de redefinição realizada. Voce recebera um email em alguns minut
 }
 ```
 
- *Saída*:
+<br>
 
-```json
+*Saída*:
 
+```text
+Senha alterada com sucesso
 ```
 
   
