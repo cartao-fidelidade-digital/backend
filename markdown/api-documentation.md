@@ -9,6 +9,9 @@ Endpoints são URLs específicas onde uma API recebe solicitações e retorna re
 
 - [User](#user)
 
+<br>
+<br>
+
 
 ## Autenticação
 
@@ -20,10 +23,12 @@ Para realizar a autenticação e necessário fazer o login e armazenar o "access
 - Token de Atualização: servem para obtém novos tokens de acesso sem refazer a autenticação. Esses tokens têm uma validade mais longa e são usados para renovar o "access token" quando este expira.
 
 
+<br>
+
 ### Exemplo:
 
 
-Entrada:
+**Entrada**:
 
 `GET` - localhost:8080/
 
@@ -31,7 +36,7 @@ Entrada:
 
 ```json
 {
-    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
 }
 ```
 
@@ -46,28 +51,28 @@ Entrada:
 
 
 
-Saída:
+*Saída*:
 
 ```json
 {
     "saida-exemplo":"value"
 }
-```
-
+```      
       
-      
-
+<br>
+<br>
+<br>
 
 
 ## Client
 
 ### 1. Mostrar todos os Clientes.
 
- Entrada:
+ *Entrada*:
 
 `GET` - localhost:8080/api/users/client
 
- Saída:
+ *Saída*:
 
 ```json
 [
@@ -100,9 +105,11 @@ Saída:
 ]
 ```
 
+<br>
+
 ### 2. Cadastrar Cliente.
 
-Entrada:
+*Entrada*:
 
 `POST` - localhost:8080/api/users/client/register
 
@@ -120,15 +127,17 @@ Entrada:
 }
 ```
 
- Saída:
+ *Saída*:
 
 ```
 Usuario salvo com sucesso
 ```
 
+<br>
+
 ### 3. Editar Cliente.
 
-Entrada:
+*Entrada*:
 
 `PUT` - localhost:8080/api/users/1
 
@@ -142,34 +151,39 @@ Entrada:
 }
 ```
 
- Saída:
+ *Saída*:
 
 ```json
 Cliente editado com sucesso
 ```
 
+<br>
+
 ### 4. Deleta Cliente.
 
-Entrada:
+*Entrada*:
 
 `DELETE` - localhost:8080/api/users/client/1
 
-Saída:
+*Saída*:
 ```json
 
 ```    
   
-      
+<br>
+<br>
+<br>
+   
 
 ## Company
 
 ### 1. Mostrar todas as Empresas.
 
- Entrada:
+ *Entrada*:
 
 `GET` - localhost:8080/api/users/company
 
- Saída:
+ *Saída*:
 
 ```json
 [
@@ -206,9 +220,11 @@ Saída:
 ]
 ```
 
+<br>
+
 ### 2. Cadastrar Empresa.
 
-Entrada:
+*Entrada*:
 
 `POST` - localhost:8080/api/users/company/register
 
@@ -228,15 +244,17 @@ Entrada:
 }
 ```
 
- Saída:
+ *Saída*:
 
 ```
 Empresa salva com sucesso
 ```
 
+<br>
+
 ### 3. Editar Empresa.
 
-Entrada:
+*Entrada*:
 
 `PUT` - localhost:8080/api/users/company/1
 
@@ -252,30 +270,35 @@ Entrada:
 }
 ```
 
- Saída:
+ *Saída*:
 
 ```json
 Empresa editada com sucesso
 ```
 
+<br>
+
 ### 4. Deleta Empresa.
 
-Entrada:
+*Entrada*:
 
 `DELETE` - localhost:8080/api/users/company/1
 
-Saída:
+*Saída*:
 
 ```json
 
 ```
 
+<br>
+<br>
+<br>
 
 ## User
 
 ### 1. Logar Usuário.
 
-Entrada:
+*Entrada*:
 
 `POST` - localhost:8080/api/users/login
 
@@ -288,7 +311,7 @@ Entrada:
 }
 ```
 
- Saída:
+ *Saída*:
 
 ```json
 {
@@ -298,9 +321,11 @@ Entrada:
 ```
 
 
+<br>
+
 ### 2. Novo Token.
 
-Entrada:
+*Entrada*:
 
 `POST` - localhost:8080/api/users/newtoken
 
@@ -313,7 +338,7 @@ Entrada:
 }
 ```
 
- Saída:
+ *Saída*:
 
 ```json
 {
@@ -323,12 +348,11 @@ Entrada:
 ```
 
 
-
-
+<br>
 
 ### 3. Esqueci senha.
 
-Entrada:
+*Entrada*:
 
 `POST` - localhost:8080/api/password/forgot
 
@@ -340,7 +364,7 @@ Entrada:
 }
 ```
 
- Saída:
+ *Saída*:
 
 ```json
 Solicitação de redefinição realizada. Voce recebera um email em alguns minutos
@@ -348,7 +372,7 @@ Solicitação de redefinição realizada. Voce recebera um email em alguns minut
 
 ### 4. Resetar Senha.
 
-Entrada:
+*Entrada*:
 
 `POST` - localhost:8080/api/password/reset
 
@@ -361,7 +385,7 @@ Entrada:
 }
 ```
 
- Saída:
+ *Saída*:
 
 ```json
 
