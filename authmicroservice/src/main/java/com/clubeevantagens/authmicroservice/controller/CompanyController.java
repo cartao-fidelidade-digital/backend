@@ -2,18 +2,23 @@ package com.clubeevantagens.authmicroservice.controller;
 import com.clubeevantagens.authmicroservice.model.Company;
 import com.clubeevantagens.authmicroservice.model.CompanyDTO;
 import com.clubeevantagens.authmicroservice.model.User;
+import com.clubeevantagens.authmicroservice.security.JwtUtils;
 import com.clubeevantagens.authmicroservice.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users/company")
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     // CREATE
     @PostMapping("/register")
@@ -30,15 +35,21 @@ public class CompanyController {
 
 
     // UPDATE
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateCompany(@PathVariable Long id, @RequestBody CompanyDTO newCompanyDTO) {
-       return companyService.updateCompany(id,newCompanyDTO);
+    @PutMapping
+    public ResponseEntity<String> updateCompany(@RequestHeader Map<String,String> header, @RequestBody CompanyDTO newCompanyDTO) {
+        var accessToken = header.get("authorization").substring(7);
+        var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
+        var id = accessTokenMap.get("sub");
+        return companyService.updateCompany(Long.valueOf(id),newCompanyDTO);
     }
 
     // DELETE
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCompany(@PathVariable Long id) {
-        return companyService.deleteCompany(id);
+    @DeleteMapping
+    public ResponseEntity<?> deleteCompany(@RequestHeader Map<String,String> header) {
+        var accessToken = header.get("authorization").substring(7);
+        var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
+        var id = accessTokenMap.get("sub");
+        return companyService.deleteCompany(Long.valueOf(id));
     }
 
 

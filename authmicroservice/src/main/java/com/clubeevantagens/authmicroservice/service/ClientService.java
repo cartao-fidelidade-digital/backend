@@ -112,21 +112,28 @@ public class ClientService {
 
 
     // EDITAR CLIENTE
-    public ResponseEntity<String> updateClient(@PathVariable Long id, @RequestBody ClientDTO newClientDTO) {
+    public ResponseEntity<String> updateClient(Long idUser,ClientDTO newClientDTO) {
 
         // Valida CPF se não for nulo
         if (newClientDTO.getCpf() != null && !isValidCPF(newClientDTO.getCpf())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido");
         }
 
-        Optional<Client> clientOptional = clientRepository.findById(id);
+        // Verifica se "user" existe
+        var userOptional = userRepository.findById(idUser);
+        if(userOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        // Verifica se "client" exite
+        var clientOptional = clientRepository.findClientByUser(userOptional.get());
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
             client.setName(newClientDTO.getName());
             client.setCpf(newClientDTO.getCpf());
             client.setPhoneNumber(newClientDTO.getPhoneNumber());
 
-            clientRepository.save(client);
+            clientRepository.save(client);// salva "client"
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Cliente editado com sucesso");
         } else {
@@ -137,14 +144,10 @@ public class ClientService {
 
 
     // DELETAR CLIENTE
-    public ResponseEntity<?> deleteClient(@PathVariable Long id) {
-        Optional<Client> clientOptional = clientRepository.findById(id);
-        if (clientOptional.isPresent()) {
-            clientRepository.deleteById(id);
-
-            Client client = clientOptional.get();
-            userService.deleteUser(client.getUser().getId());
-
+    public ResponseEntity<?> deleteClient(Long idUser) {
+        var userOptional = userRepository.findById(idUser);
+        if (userOptional.isPresent()) {
+            userService.deleteUser(idUser);// deleta "user"
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();

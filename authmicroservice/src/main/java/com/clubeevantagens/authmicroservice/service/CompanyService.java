@@ -115,7 +115,7 @@ public class CompanyService {
 
 
     // EDITAR EMPRESA
-    public ResponseEntity<String> updateCompany(@PathVariable Long id, @RequestBody CompanyDTO newCompanyDTO) {
+    public ResponseEntity<String> updateCompany(Long idUser, CompanyDTO newCompanyDTO) {
 
         // Verifica se ambos CPF e CNPJ são nulos
         if (newCompanyDTO.getCpf() == null && newCompanyDTO.getCnpj() == null) {
@@ -132,7 +132,14 @@ public class CompanyService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CNPJ inválido");
         }
 
-        Optional<Company> companyOptional = companyRepository.findById(id);
+        // Verifica se "user" existe
+        var userOptional = userRepository.findById(idUser);
+        if(userOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        // Verifica se "company" exite
+        Optional<Company> companyOptional = companyRepository.findCompanyByUser(userOptional.get());
         if (companyOptional.isPresent()) {
             Company company = companyOptional.get();
             company.setCompanyName(newCompanyDTO.getCompanyName());
@@ -141,7 +148,7 @@ public class CompanyService {
             company.setType(newCompanyDTO.getType());
             company.setContactPhone(newCompanyDTO.getContactPhone());
 
-            companyRepository.save(company);
+            companyRepository.save(company);// salva "company"
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Empresa editada com sucesso");
         } else {
@@ -152,13 +159,10 @@ public class CompanyService {
 
 
     // DELETAR EMPRESA
-    public ResponseEntity<?> deleteCompany(@PathVariable Long id) {
-        Optional<Company> companyOptional = companyRepository.findById(id);
-        if (companyOptional.isPresent()) {
-
-            Company company = companyOptional.get();
-            userService.deleteUser(company.getUser().getId());
-
+    public ResponseEntity<?> deleteCompany(Long idUser) {
+        var userOptional = userRepository.findById(idUser);
+        if (userOptional.isPresent()) {
+            userService.deleteUser(idUser);// deleta "user"
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
