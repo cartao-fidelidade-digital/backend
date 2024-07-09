@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -170,7 +171,23 @@ public class CompanyService {
     }
 
 
-
+    // GET-COMPANY
+    public ResponseEntity<?> getCompany(Long idUser){
+        var userOptional = userRepository.findById(idUser);
+        if (userOptional.isPresent()) {
+            var company = companyRepository.findCompanyByUser(userOptional.get()).get();
+            var payload = new HashMap<>();
+            payload.put("email",company.getUser().getEmail());
+            payload.put("companyName",company.getCompanyName());
+            payload.put("cpf",company.getCpf());
+            payload.put("cnpj",company.getCnpj());
+            payload.put("type",company.getType());
+            payload.put("contactPhone",company.getContactPhone());
+            return ResponseEntity.ok(payload);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
     // Remove Formatação de CPF ou CNPJ

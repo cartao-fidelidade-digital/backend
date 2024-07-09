@@ -28,7 +28,7 @@ public class ClientController {
 
 
     // READ
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllClient() {
         return clientService.getAllClients();
     }
@@ -52,7 +52,14 @@ public class ClientController {
         return clientService.deleteClient(Long.valueOf(id));
     }
 
-
+    // GET-CLIENT
+    @GetMapping
+    public ResponseEntity<?> getClient(@RequestHeader Map<String,String> header) {
+        var accessToken = header.get("authorization").substring(7);
+        var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
+        var id = accessTokenMap.get("sub");
+        return clientService.getClient(Long.valueOf(id));
+    }
 
 
 }

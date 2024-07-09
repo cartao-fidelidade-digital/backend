@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -149,6 +146,22 @@ public class ClientService {
         if (userOptional.isPresent()) {
             userService.deleteUser(idUser);// deleta "user"
             return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // GET-CLIENT
+    public ResponseEntity<?> getClient(Long idUser){
+        var userOptional = userRepository.findById(idUser);
+        if (userOptional.isPresent()) {
+            var client = clientRepository.findClientByUser(userOptional.get()).get();
+            var payload = new HashMap<>();
+            payload.put("email",client.getUser().getEmail());
+            payload.put("name",client.getName());
+            payload.put("cpf",client.getCpf());
+            payload.put("phoneNumber",client.getPhoneNumber());
+            return ResponseEntity.ok(payload);
         } else {
             return ResponseEntity.notFound().build();
         }

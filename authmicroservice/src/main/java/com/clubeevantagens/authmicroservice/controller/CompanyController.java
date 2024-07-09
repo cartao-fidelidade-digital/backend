@@ -28,7 +28,7 @@ public class CompanyController {
 
 
     // READ
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllCompanies() {
         return companyService.getAllCompanies();
     }
@@ -52,7 +52,14 @@ public class CompanyController {
         return companyService.deleteCompany(Long.valueOf(id));
     }
 
-
+    // GET-COMPANY
+    @GetMapping
+    public ResponseEntity<?> getCompany(@RequestHeader Map<String,String> header) {
+        var accessToken = header.get("authorization").substring(7);
+        var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
+        var id = accessTokenMap.get("sub");
+        return companyService.getCompany(Long.valueOf(id));
+    }
 
 
 }
