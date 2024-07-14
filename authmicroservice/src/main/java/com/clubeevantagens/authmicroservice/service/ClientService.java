@@ -1,6 +1,8 @@
 package com.clubeevantagens.authmicroservice.service;
 
 import com.clubeevantagens.authmicroservice.model.*;
+import com.clubeevantagens.authmicroservice.model.dto.ClientDto;
+import com.clubeevantagens.authmicroservice.model.dto.ClientUpdateDto;
 import com.clubeevantagens.authmicroservice.repository.ClientRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -31,7 +30,7 @@ public class ClientService {
     private PasswordEncoder passwordEncoder;
 
     // CRIAR CLIENTE
-    public ResponseEntity<String> registerClient(ClientDTO clientDTO){
+    public ResponseEntity<String> registerClient(ClientDto clientDTO){
 
         // Verifica se o email já está cadastrado
         if (userRepository.findUserByEmail(clientDTO.getEmail()).isPresent()) {
@@ -87,17 +86,16 @@ public class ClientService {
     public ResponseEntity<?> getAllClients() {
 
         List<Client> clients = clientRepository.findAll();
-        List<ClientDTO> retorno = new ArrayList<>();
+        List<ClientDto> retorno = new ArrayList<>();
 
         for(Client c : clients){
-            ClientDTO cAux = new ClientDTO();
+            ClientDto cAux = new ClientDto();
             cAux.setName(c.getName());
             cAux.setPassword(c.getUser().getPassword());
             cAux.setEmail(c.getUser().getEmail());
             cAux.setCpf(c.getCpf());
             cAux.setPhoneNumber(c.getPhoneNumber());
             cAux.setTermsOfUse(c.isTermsOfUse());
-            cAux.setDateTermsOfUse(c.getDateTermsOfUse().toString());
 
             retorno.add(cAux);
         }
@@ -109,10 +107,10 @@ public class ClientService {
 
 
     // EDITAR CLIENTE
-    public ResponseEntity<String> updateClient(Long idUser,ClientDTO newClientDTO) {
+    public ResponseEntity<String> updateClient(Long idUser, ClientUpdateDto newClientDto) {
 
         // Valida CPF se não for nulo
-        if (newClientDTO.getCpf() != null && !isValidCPF(newClientDTO.getCpf())) {
+        if (newClientDto.getCpf() != null && !isValidCPF(newClientDto.getCpf())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido");
         }
 
@@ -126,9 +124,9 @@ public class ClientService {
         var clientOptional = clientRepository.findClientByUser(userOptional.get());
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
-            client.setName(newClientDTO.getName());
-            client.setCpf(newClientDTO.getCpf());
-            client.setPhoneNumber(newClientDTO.getPhoneNumber());
+            client.setName(newClientDto.getName());
+            client.setCpf(newClientDto.getCpf());
+            client.setPhoneNumber(newClientDto.getPhoneNumber());
 
             clientRepository.save(client);// salva "client"
 

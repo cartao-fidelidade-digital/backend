@@ -1,6 +1,7 @@
 package com.clubeevantagens.authmicroservice.service;
 
 import com.clubeevantagens.authmicroservice.model.Company;
+import com.clubeevantagens.authmicroservice.model.dto.UserDto;
 import com.clubeevantagens.authmicroservice.security.UserDetail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -58,7 +59,7 @@ public class UserService {
 
     // LOGIN USER
     @Transactional
-    public ResponseEntity<?> loginUser(User user){
+    public ResponseEntity<?> loginUser(UserDto user){
 
         try {
             UserDetails userDetails = userDetailService.loadUserByUsername(user.getEmail());// valida email
@@ -84,7 +85,7 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email ou Senha incorreta");
         } catch (Exception e1){ // outros erros
             e1.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu um erro inesperado");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado");
         }
     }
 

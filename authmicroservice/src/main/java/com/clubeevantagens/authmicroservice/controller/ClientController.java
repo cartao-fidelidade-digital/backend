@@ -1,19 +1,20 @@
 package com.clubeevantagens.authmicroservice.controller;
-import com.clubeevantagens.authmicroservice.model.Client;
-import com.clubeevantagens.authmicroservice.model.ClientDTO;
-import com.clubeevantagens.authmicroservice.model.User;
+import com.clubeevantagens.authmicroservice.document.ClientDocs;
+import com.clubeevantagens.authmicroservice.model.dto.ClientDto;
+import com.clubeevantagens.authmicroservice.model.dto.ClientUpdateDto;
 import com.clubeevantagens.authmicroservice.security.JwtUtils;
 import com.clubeevantagens.authmicroservice.service.ClientService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users/client")
-public class ClientController {
+public class ClientController implements ClientDocs {
     @Autowired
     private ClientService clientService;
 
@@ -22,7 +23,8 @@ public class ClientController {
 
     // CREATE
     @PostMapping("/register")
-    public ResponseEntity<String> registerClient(@RequestBody ClientDTO clientDTO) {
+    @Override
+    public ResponseEntity<?> registerClient(@RequestBody ClientDto clientDTO) {
         return clientService.registerClient(clientDTO);
     }
 
@@ -36,17 +38,25 @@ public class ClientController {
 
     // UPDATE
     @PutMapping
-    public ResponseEntity<String> updateClient(@RequestHeader Map<String,String> header, @RequestBody ClientDTO newClientDTO) {
-        var accessToken = header.get("authorization").substring(7);
+    @Override
+    public ResponseEntity<?> updateClient(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody ClientUpdateDto newClientDto) {
+
+        var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
-        return clientService.updateClient(Long.valueOf(id),newClientDTO);
+        return clientService.updateClient(Long.valueOf(id), newClientDto);
     }
 
     // DELETE
     @DeleteMapping
-    public ResponseEntity<?> deleteClient(@RequestHeader Map<String,String> header) {
-        var accessToken = header.get("authorization").substring(7);
+    @Override
+    public ResponseEntity<?> deleteClient(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
+            @RequestHeader("Authorization") String authorization) {
+        var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
         return clientService.deleteClient(Long.valueOf(id));
@@ -54,8 +64,11 @@ public class ClientController {
 
     // GET-CLIENT
     @GetMapping
-    public ResponseEntity<?> getClient(@RequestHeader Map<String,String> header) {
-        var accessToken = header.get("authorization").substring(7);
+    @Override
+    public ResponseEntity<?> getClient(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
+            @RequestHeader("Authorization") String authorization) {
+        var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
         return clientService.getClient(Long.valueOf(id));

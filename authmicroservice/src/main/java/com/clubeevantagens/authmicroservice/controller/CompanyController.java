@@ -1,19 +1,20 @@
 package com.clubeevantagens.authmicroservice.controller;
-import com.clubeevantagens.authmicroservice.model.Company;
-import com.clubeevantagens.authmicroservice.model.CompanyDTO;
-import com.clubeevantagens.authmicroservice.model.User;
+import com.clubeevantagens.authmicroservice.document.CompanyDocs;
+import com.clubeevantagens.authmicroservice.model.dto.CompanyDto;
+import com.clubeevantagens.authmicroservice.model.dto.CompanyUpdateDto;
 import com.clubeevantagens.authmicroservice.security.JwtUtils;
 import com.clubeevantagens.authmicroservice.service.CompanyService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users/company")
-public class CompanyController {
+public class CompanyController implements CompanyDocs {
     @Autowired
     private CompanyService companyService;
 
@@ -22,7 +23,8 @@ public class CompanyController {
 
     // CREATE
     @PostMapping("/register")
-    public ResponseEntity<String> registerCompany(@RequestBody CompanyDTO companyDTO) {
+    @Override
+    public ResponseEntity<?> registerCompany(@RequestBody CompanyDto companyDTO) {
         return companyService.registerCompany(companyDTO);
     }
 
@@ -36,17 +38,24 @@ public class CompanyController {
 
     // UPDATE
     @PutMapping
-    public ResponseEntity<String> updateCompany(@RequestHeader Map<String,String> header, @RequestBody CompanyDTO newCompanyDTO) {
-        var accessToken = header.get("authorization").substring(7);
+    @Override
+    public ResponseEntity<String> updateCompany(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Token JWT", required = true)
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody CompanyUpdateDto newCompanyDto) {
+        var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
-        return companyService.updateCompany(Long.valueOf(id),newCompanyDTO);
+        return companyService.updateCompany(Long.valueOf(id), newCompanyDto);
     }
 
     // DELETE
     @DeleteMapping
-    public ResponseEntity<?> deleteCompany(@RequestHeader Map<String,String> header) {
-        var accessToken = header.get("authorization").substring(7);
+    @Override
+    public ResponseEntity<?> deleteCompany(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
+            @RequestHeader("Authorization") String authorization) {
+        var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
         return companyService.deleteCompany(Long.valueOf(id));
@@ -54,8 +63,11 @@ public class CompanyController {
 
     // GET-COMPANY
     @GetMapping
-    public ResponseEntity<?> getCompany(@RequestHeader Map<String,String> header) {
-        var accessToken = header.get("authorization").substring(7);
+    @Override
+    public ResponseEntity<?> getCompany(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
+            @RequestHeader("Authorization") String authorization) {
+        var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
         return companyService.getCompany(Long.valueOf(id));

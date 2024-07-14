@@ -1,17 +1,15 @@
 package com.clubeevantagens.authmicroservice.service;
 
 import com.clubeevantagens.authmicroservice.model.*;
+import com.clubeevantagens.authmicroservice.model.dto.CompanyDto;
+import com.clubeevantagens.authmicroservice.model.dto.CompanyUpdateDto;
 import com.clubeevantagens.authmicroservice.repository.CompanyRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +29,7 @@ public class CompanyService {
     private UserService userService;
 
     // CRIAR EMPRESA
-    public ResponseEntity<String> registerCompany(CompanyDTO companyDTO){
+    public ResponseEntity<String> registerCompany(CompanyDto companyDTO){
 
         // Verifica se o email já está cadastrado
         if (userRepository.findUserByEmail(companyDTO.getEmail()).isPresent()) {
@@ -94,10 +92,10 @@ public class CompanyService {
     public ResponseEntity<?> getAllCompanies() {
         List<Company> companies = companyRepository.findAll();
 
-        List<CompanyDTO> retorno = new ArrayList<>();
+        List<CompanyDto> retorno = new ArrayList<>();
 
         for(Company c : companies){
-            CompanyDTO cAux = new CompanyDTO();
+            CompanyDto cAux = new CompanyDto();
             cAux.setCompanyName(c.getCompanyName());
             cAux.setPassword(c.getUser().getPassword());
             cAux.setEmail(c.getUser().getEmail());
@@ -106,7 +104,6 @@ public class CompanyService {
             cAux.setTermsOfUse(c.isTermsOfUse());
             cAux.setCnpj(c.getCnpj());
             cAux.setType(c.getType());
-            cAux.setDateTermsOfUse(c.getDateTermsOfUse().toString());
 
             retorno.add(cAux);
         }
@@ -116,20 +113,15 @@ public class CompanyService {
 
 
     // EDITAR EMPRESA
-    public ResponseEntity<String> updateCompany(Long idUser, CompanyDTO newCompanyDTO) {
-
-        // Verifica se ambos CPF e CNPJ são nulos
-        if (newCompanyDTO.getCpf() == null && newCompanyDTO.getCnpj() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF ou CNPJ deve ser fornecido");
-        }
+    public ResponseEntity<String> updateCompany(Long idUser, CompanyUpdateDto newCompanyDto) {
 
         // Valida CPF se não for nulo
-        if (newCompanyDTO.getCpf() != null && !isValidCPF(newCompanyDTO.getCpf())) {
+        if (newCompanyDto.getCpf() != null && !isValidCPF(newCompanyDto.getCpf())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido");
         }
 
         // Valida CNPJ se não for nulo
-        if (newCompanyDTO.getCnpj() != null && !isValidCNPJ(newCompanyDTO.getCnpj())) {
+        if (newCompanyDto.getCnpj() != null && !isValidCNPJ(newCompanyDto.getCnpj())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CNPJ inválido");
         }
 
@@ -143,11 +135,11 @@ public class CompanyService {
         Optional<Company> companyOptional = companyRepository.findCompanyByUser(userOptional.get());
         if (companyOptional.isPresent()) {
             Company company = companyOptional.get();
-            company.setCompanyName(newCompanyDTO.getCompanyName());
-            company.setCnpj(newCompanyDTO.getCnpj());
-            company.setCpf(newCompanyDTO.getCpf());
-            company.setType(newCompanyDTO.getType());
-            company.setContactPhone(newCompanyDTO.getContactPhone());
+            company.setCompanyName(newCompanyDto.getCompanyName());
+            company.setCnpj(newCompanyDto.getCnpj());
+            company.setCpf(newCompanyDto.getCpf());
+            company.setType(newCompanyDto.getType());
+            company.setContactPhone(newCompanyDto.getContactPhone());
 
             companyRepository.save(company);// salva "company"
 
