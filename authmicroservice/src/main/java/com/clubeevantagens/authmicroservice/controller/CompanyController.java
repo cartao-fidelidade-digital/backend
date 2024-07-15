@@ -39,10 +39,7 @@ public class CompanyController implements CompanyDocs {
     // UPDATE
     @PutMapping
     @Override
-    public ResponseEntity<String> updateCompany(
-            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Token JWT", required = true)
-            @RequestHeader("Authorization") String authorization,
-            @RequestBody CompanyUpdateDto newCompanyDto) {
+    public ResponseEntity<String> updateCompany(@RequestHeader("Authorization") String authorization, @RequestBody CompanyUpdateDto newCompanyDto) {
         var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
@@ -52,9 +49,7 @@ public class CompanyController implements CompanyDocs {
     // DELETE
     @DeleteMapping
     @Override
-    public ResponseEntity<?> deleteCompany(
-            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
-            @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<?> deleteCompany(@RequestHeader("Authorization") String authorization) {
         var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
@@ -64,9 +59,7 @@ public class CompanyController implements CompanyDocs {
     // GET-COMPANY
     @GetMapping
     @Override
-    public ResponseEntity<?> getCompany(
-            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
-            @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<?> getCompany(@RequestHeader("Authorization") String authorization) {
         var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");

@@ -39,10 +39,7 @@ public class ClientController implements ClientDocs {
     // UPDATE
     @PutMapping
     @Override
-    public ResponseEntity<?> updateClient(
-            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
-            @RequestHeader("Authorization") String authorization,
-            @RequestBody ClientUpdateDto newClientDto) {
+    public ResponseEntity<?> updateClient(@RequestHeader("Authorization") String authorization, @RequestBody ClientUpdateDto newClientDto) {
 
         var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
@@ -53,9 +50,7 @@ public class ClientController implements ClientDocs {
     // DELETE
     @DeleteMapping
     @Override
-    public ResponseEntity<?> deleteClient(
-            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
-            @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<?> deleteClient(@RequestHeader("Authorization") String authorization) {
         var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
@@ -65,9 +60,7 @@ public class ClientController implements ClientDocs {
     // GET-CLIENT
     @GetMapping
     @Override
-    public ResponseEntity<?> getClient(
-            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
-            @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<?> getClient(@RequestHeader("Authorization") String authorization) {
         var accessToken = authorization.substring(7);
         var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
         var id = accessTokenMap.get("sub");
