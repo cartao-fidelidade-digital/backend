@@ -26,7 +26,17 @@ public interface CompanyDocs {
     public ResponseEntity<?> registerCompany(@RequestBody CompanyDto companyDTO);
 
     // READ
-
+    @Operation(summary = "Resgatar Todas as Empresas")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "empresas resgatadas com sucesso",
+                    content = {@Content(schema = @Schema(implementation = ClientGetReturn.class), mediaType = "application/json") }),
+            @ApiResponse(responseCode = "403", description = "usuario não autorizado", content = @Content),})
+    public ResponseEntity<?> getAllCompanies(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
+            @RequestHeader("Authorization") String authorization
+    );
 
 
     // UPDATE

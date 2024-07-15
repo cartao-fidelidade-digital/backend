@@ -32,7 +32,17 @@ public interface ClientDocs {
     public ResponseEntity<?> registerClient(@RequestBody ClientDto clientDTO);
 
     // READ
-
+    @Operation(summary = "Resgatar Todos os Clientes")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "clientes resgatados com sucesso",
+                    content = {@Content(schema = @Schema(implementation = ClientGetReturn.class), mediaType = "application/json") }),
+            @ApiResponse(responseCode = "403", description = "usuario não autorizado", content = @Content),})
+    public ResponseEntity<?> getAllClient(
+            @Parameter(in = ParameterIn.HEADER, name = "Authorization", description = "Access Token", required = true)
+            @RequestHeader("Authorization") String authorization
+    );
 
 
     // UPDATE

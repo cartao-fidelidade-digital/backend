@@ -31,7 +31,8 @@ public class CompanyController implements CompanyDocs {
 
     // READ
     @GetMapping("/all")
-    public ResponseEntity<?> getAllCompanies() {
+    @Override
+    public ResponseEntity<?> getAllCompanies(@RequestHeader("Authorization") String authorization) {
         return companyService.getAllCompanies();
     }
 

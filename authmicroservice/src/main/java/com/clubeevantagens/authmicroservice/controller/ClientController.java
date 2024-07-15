@@ -31,7 +31,8 @@ public class ClientController implements ClientDocs {
 
     // READ
     @GetMapping("/all")
-    public ResponseEntity<?> getAllClient() {
+    @Override
+    public ResponseEntity<?> getAllClient(@RequestHeader("Authorization") String authorization) {
         return clientService.getAllClients();
     }
 
