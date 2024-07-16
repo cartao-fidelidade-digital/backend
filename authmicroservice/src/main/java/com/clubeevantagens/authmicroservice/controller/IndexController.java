@@ -1,5 +1,6 @@
 package com.clubeevantagens.authmicroservice.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ public class IndexController {
         this.resourceLoader = resourceLoader;
     }
 
+    @Hidden
     @GetMapping("/")
     public ResponseEntity<String> index() throws IOException {
         Resource resource = resourceLoader.getResource("classpath:templates/index.html");
