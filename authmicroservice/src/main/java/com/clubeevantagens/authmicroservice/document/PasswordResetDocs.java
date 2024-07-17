@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface PasswordResetDocs {
     // ESQUECI SENHA
-    @Operation(summary = "Esqueci Senha")
+    @Operation(summary = "Esqueci Senha", description = "Endpoint para solicitar troca de senha (por email).")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "solicitação de redefinição realizada. Voce recebera um email em alguns minutos", content = @Content),
             @ApiResponse(responseCode = "404", description = "email não encontrado", content = @Content)
@@ -22,7 +22,7 @@ public interface PasswordResetDocs {
 
 
     // RESETA SENHA
-    @Operation(summary = "Resetar Senha")
+    @Operation(summary = "Resetar Senha", description = "Endpoint para receber nova senha")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "senha alterada com sucesso", content = @Content),
             @ApiResponse(responseCode = "400", description = "token invalido", content = @Content),

@@ -18,7 +18,7 @@ import java.util.Map;
 public interface UserDocs {
 
     // LOGAR
-    @Operation(summary = "Logar Usuario")
+    @Operation(summary = "Logar Usuario", description = "Endpoint para logar usuario e entregar um token de acesso")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "202",
@@ -31,7 +31,7 @@ public interface UserDocs {
 
 
     // NEW TOKEN
-    @Operation(summary = "Novo Token")
+    @Operation(summary = "Novo Token", description = "Endpoint para atualizar o token de acesso")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "202",

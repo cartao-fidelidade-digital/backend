@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ import java.util.Map;
 public interface ClientDocs {
 
     // CREATE
-    @Operation(summary = "Criar Cliente")
+    @Operation(summary = "Criar Cliente" , description = "Endpoint para criar um novo cliente." )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "cliente criado com sucesso", content = @Content),
             @ApiResponse(responseCode = "400", description = "email já cadastrado " +
@@ -32,7 +33,7 @@ public interface ClientDocs {
     public ResponseEntity<?> registerClient(@RequestBody ClientDto clientDTO);
 
     // READ
-    @Operation(summary = "Resgatar Todos os Clientes")
+    @Operation(summary = "Resgatar Todos os Clientes", description = "Endpoint para resgatar todos os clientes. <br><br>Role: Admin", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -46,7 +47,7 @@ public interface ClientDocs {
 
 
     // UPDATE
-    @Operation(summary = "Editar Cliente")
+    @Operation(summary = "Editar Cliente", description = "Endpoint para editar um cliente específico. <br><br>Role: Client", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "cliente editado com sucesso", content = @Content),
             @ApiResponse(responseCode = "400", description = "CPF inválido", content = @Content),
@@ -59,7 +60,8 @@ public interface ClientDocs {
 
 
     // DELETE
-    @Operation(summary = "Deletar Cliente")
+    @Operation(summary = "Deletar Cliente", description = "Endpoint para excluir um cliente específico. <br><br>Role: Client", security = @SecurityRequirement(name = "bearerAuth"))
+
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "cliente deletado com sucesso", content = @Content),
             @ApiResponse(responseCode = "403", description = "usuario não autorizado", content = @Content),
@@ -69,7 +71,7 @@ public interface ClientDocs {
             @RequestHeader("Authorization") String authorization);
 
     // GET-CLIENT
-    @Operation(summary = "Resgatar Cliente")
+    @Operation(summary = "Resgatar Cliente", description = "Endpoint para obter as informações de um cliente específico. <br><br>Role: Client", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
