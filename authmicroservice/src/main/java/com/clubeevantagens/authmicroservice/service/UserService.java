@@ -67,14 +67,15 @@ public class UserService {
             if (passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {// valida password
 
                 var accessToken = jwtUtils.generateAccessToken(userDetails);// gera "accessToken"
-                var refreshToken = jwtUtils.generateRefreshToken(accessToken); // gera "refreshToken"
+                var refreshToken = jwtUtils.generateRefreshToken(accessToken.get("accessToken")); // gera "refreshToken"
 
                 userRepository.updateRefreshTokenByEmail(
                         user.getEmail(), Integer.parseInt(refreshToken.get("key")));// salva "key" no banco
 
                 Map<String, String> payload = new HashMap<>();// retorno
-                payload.put("accessToken",accessToken);
+                payload.put("accessToken",accessToken.get("accessToken"));
                 payload.put("refreshToken", refreshToken.get("refreshToken"));
+                payload.put("role", accessToken.get("role"));
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(payload);
             } else {
@@ -116,13 +117,13 @@ public class UserService {
                 UserDetails userDetails = new UserDetail(userOptional.get());
 
                 var accessToken = jwtUtils.generateAccessToken(userDetails);// gera "accessToken"
-                var refreshTokenn = jwtUtils.generateRefreshToken(accessToken); // gera "refreshToken"
+                var refreshTokenn = jwtUtils.generateRefreshToken(accessToken.get("accessToken")); // gera "refreshToken"
 
                 userRepository.updateRefreshTokenByEmail(
                         userOptional.get().getEmail(), Integer.parseInt(refreshTokenn.get("key")));// salva "key" no banco
 
                 Map<String, String> payload = new HashMap<>();// retorno
-                payload.put("newAccessToken",accessToken);
+                payload.put("newAccessToken",accessToken.get("accessToken"));
                 payload.put("newRefreshToken", refreshTokenn.get("refreshToken"));
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(payload);

@@ -34,7 +34,7 @@ public class JwtUtils {
     }
 
     // GERAR ACCESS TOKEN
-    public String generateAccessToken(UserDetails userDetails) {
+    public Map<String,String> generateAccessToken(UserDetails userDetails) {
         Instant now = Instant.now();
 
         var scopes = userDetails.getAuthorities()
@@ -54,9 +54,15 @@ public class JwtUtils {
                 .claim("scope", scopes)
                 .build();
 
-        return jwtEncoder.encode(
+        var accessToken = jwtEncoder.encode(
                         JwtEncoderParameters.from(claims))
                 .getTokenValue();
+
+        Map<String,String> retorno = new HashMap<>();// retorno
+        retorno.put("accessToken", accessToken);
+        retorno.put("role", String.valueOf(scopes));
+
+        return retorno;
     }
 
     // EXTRAIR ACCESS TOKEN
