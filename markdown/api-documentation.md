@@ -92,6 +92,8 @@ saída realizada com sucesso
         "phoneNumber": null,
         "termsOfUse": false,
         "dateTermsOfUse": null,
+        "socialName":"Joao Paulo",
+        "preferences":"alimentação,papelaria,petshop",
         "user": {
             "id": 1,
             "email": "joao@gmail.com",
@@ -105,6 +107,8 @@ saída realizada com sucesso
         "phoneNumber": null,
         "termsOfUse": false,
         "dateTermsOfUse": null,
+        "socialName":"Maria Joaquina",
+        "preferences":"alimentação,papelaria,petshop",
         "user": {
             "id": 2,
             "email": "maria@gmail.com",
@@ -133,7 +137,9 @@ saída realizada com sucesso
     "termsOfUse": true,
     "dateTermsOfUse": "2024-04-29 12:30:45.123456",
     "cpf":"154.599.850-72",
-    "phone_number":"61 9 9999-9999"
+    "phone_number":"61 9 9999-9999",
+    "socialName":"Joao Paulo",
+    "preferences":"alimentação,papelaria,petshop"
 }
 ```
 
@@ -170,7 +176,9 @@ Usuario salvo com sucesso
 {
     "name": "joaopedro",
     "cpf":"154.599.850-72",
-    "phoneNumber":"61 9 9999-9999"
+    "phoneNumber":"61 9 9999-9999",
+    "socialName":"Joao Paulo",
+    "preferences":"alimentação,papelaria,petshop"
 }
 ```
 
