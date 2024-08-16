@@ -18,6 +18,8 @@ public class ClientDto {
     private String cpf;
     private String phoneNumber;
     private boolean termsOfUse;
+    private String socialName;
+    private String preferences;
 
 
 

@@ -44,6 +44,12 @@ public class Client {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "social_name")
+    private String socialName;
+
+    @Column(name = "preferences")
+    private String preferences;
+
     public LocalDateTime dateNow() {
         return LocalDateTime.now();
     }

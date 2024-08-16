@@ -72,6 +72,8 @@ public class ClientService {
         client.setPhoneNumber(clientDTO.getPhoneNumber());
         client.setTermsOfUse(clientDTO.isTermsOfUse());
         client.setDateTermsOfUse(client.dateNow());
+        client.setSocialName(clientDTO.getSocialName());
+        client.setPreferences(clientDTO.getPreferences());
 
         // Salva "Client" no banco
         clientRepository.save(client);
@@ -96,6 +98,8 @@ public class ClientService {
             cAux.setCpf(c.getCpf());
             cAux.setPhoneNumber(c.getPhoneNumber());
             cAux.setTermsOfUse(c.isTermsOfUse());
+            cAux.setSocialName(c.getSocialName());
+            cAux.setPreferences(c.getPreferences());
 
             retorno.add(cAux);
         }
@@ -127,6 +131,8 @@ public class ClientService {
             client.setName(newClientDto.getName());
             client.setCpf(newClientDto.getCpf());
             client.setPhoneNumber(newClientDto.getPhoneNumber());
+            client.setSocialName(newClientDto.getSocialName());
+            client.setPreferences(newClientDto.getPreferences());
 
             clientRepository.save(client);// salva "client"
 
@@ -159,6 +165,8 @@ public class ClientService {
             payload.put("name",client.getName());
             payload.put("cpf",client.getCpf());
             payload.put("phoneNumber",client.getPhoneNumber());
+            payload.put("socialName",client.getSocialName());
+            payload.put("preferences", client.getPreferences());
             return ResponseEntity.ok(payload);
         } else {
             return ResponseEntity.notFound().build();
