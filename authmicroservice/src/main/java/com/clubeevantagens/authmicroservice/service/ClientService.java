@@ -3,6 +3,7 @@ package com.clubeevantagens.authmicroservice.service;
 import com.clubeevantagens.authmicroservice.model.*;
 import com.clubeevantagens.authmicroservice.model.dto.ClientDto;
 import com.clubeevantagens.authmicroservice.model.dto.ClientUpdateDto;
+import com.clubeevantagens.authmicroservice.model.dto.UserDto;
 import com.clubeevantagens.authmicroservice.repository.ClientRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class ClientService {
     private PasswordEncoder passwordEncoder;
 
     // CRIAR CLIENTE
-    public ResponseEntity<String> registerClient(ClientDto clientDTO){
+    public ResponseEntity<?> registerClient(ClientDto clientDTO){
 
         // Verifica se o email já está cadastrado
         if (userRepository.findUserByEmail(clientDTO.getEmail()).isPresent()) {
@@ -78,8 +79,10 @@ public class ClientService {
         // Salva "Client" no banco
         clientRepository.save(client);
 
+        // Realizar Login
+        var retorno = userService.loginUser(new UserDto(clientDTO.getEmail(),clientDTO.getPassword()));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Cliente salvo com sucesso");
+        return retorno;
     }
 
 

@@ -1,9 +1,6 @@
 package com.clubeevantagens.authmicroservice.model.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
@@ -12,4 +9,9 @@ import lombok.ToString;
 public class UserDto {
     private String email;
     private String password;
+
+    public UserDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

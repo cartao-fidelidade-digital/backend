@@ -3,6 +3,7 @@ package com.clubeevantagens.authmicroservice.service;
 import com.clubeevantagens.authmicroservice.model.*;
 import com.clubeevantagens.authmicroservice.model.dto.CompanyDto;
 import com.clubeevantagens.authmicroservice.model.dto.CompanyUpdateDto;
+import com.clubeevantagens.authmicroservice.model.dto.UserDto;
 import com.clubeevantagens.authmicroservice.repository.CompanyRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CompanyService {
     private UserService userService;
 
     // CRIAR EMPRESA
-    public ResponseEntity<String> registerCompany(CompanyDto companyDTO){
+    public ResponseEntity<?> registerCompany(CompanyDto companyDTO){
 
         // Verifica se o email já está cadastrado
         if (userRepository.findUserByEmail(companyDTO.getEmail()).isPresent()) {
@@ -82,8 +83,10 @@ public class CompanyService {
         // Salva "Company" no banco
         companyRepository.save(company);
 
+        // Realizar Login
+        var retorno = userService.loginUser(new UserDto(companyDTO.getEmail(),companyDTO.getPassword()));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Empresa salva com sucesso");
+        return retorno;
     }
 
 
