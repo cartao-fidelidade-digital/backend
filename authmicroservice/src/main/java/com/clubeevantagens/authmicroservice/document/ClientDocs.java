@@ -1,9 +1,6 @@
 package com.clubeevantagens.authmicroservice.document;
 
-import com.clubeevantagens.authmicroservice.model.dto.ClientDto;
-import com.clubeevantagens.authmicroservice.model.dto.ClientGetReturn;
-import com.clubeevantagens.authmicroservice.model.dto.ClientUpdateDto;
-import com.clubeevantagens.authmicroservice.model.dto.NewTokenReturn;
+import com.clubeevantagens.authmicroservice.model.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -24,7 +21,10 @@ public interface ClientDocs {
     // CREATE
     @Operation(summary = "Criar Cliente" , description = "Endpoint para criar um novo cliente." )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "cliente criado com sucesso", content = @Content),
+            @ApiResponse(
+                    responseCode = "202",
+                    description = "usuario logado com sucesso",
+                    content = {@Content(schema = @Schema(implementation = LoginReturn.class),mediaType = "application/json") }),
             @ApiResponse(responseCode = "400", description = "email já cadastrado " +
                     "<br> email inválido " +
                     "<br> CPF inválido" +

@@ -17,7 +17,10 @@ public interface CompanyDocs {
     // CREATE
     @Operation(summary = "Criar Empresa", description = "Endpoint para criar uma nova empresa.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "empresa criada com sucesso", content = @Content),
+            @ApiResponse(
+                    responseCode = "202",
+                    description = "usuario logado com sucesso",
+                    content = {@Content(schema = @Schema(implementation = LoginReturn.class),mediaType = "application/json") }),
             @ApiResponse(responseCode = "400", description = "email já cadastrado " +
                     "<br> email inválido " +
                     "<br> CPF inválido" +
