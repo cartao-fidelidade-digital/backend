@@ -138,11 +138,11 @@ public class CompanyService {
         Optional<Company> companyOptional = companyRepository.findCompanyByUser(userOptional.get());
         if (companyOptional.isPresent()) {
             Company company = companyOptional.get();
-            company.setCompanyName(newCompanyDto.getCompanyName());
-            company.setCnpj(newCompanyDto.getCnpj());
-            company.setCpf(newCompanyDto.getCpf());
-            company.setType(newCompanyDto.getType());
-            company.setContactPhone(newCompanyDto.getContactPhone());
+            Optional.ofNullable(newCompanyDto.getCompanyName()).ifPresent(company::setCompanyName);
+            Optional.ofNullable(newCompanyDto.getCnpj()).ifPresent(company::setCnpj);
+            Optional.ofNullable(newCompanyDto.getCpf()).ifPresent(company::setCpf);
+            Optional.ofNullable(newCompanyDto.getType()).ifPresent(company::setType);
+            Optional.ofNullable(newCompanyDto.getContactPhone()).ifPresent(company::setContactPhone);
 
             companyRepository.save(company);// salva "company"
 

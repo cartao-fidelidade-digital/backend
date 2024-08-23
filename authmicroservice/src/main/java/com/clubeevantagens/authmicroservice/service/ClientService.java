@@ -131,11 +131,11 @@ public class ClientService {
         var clientOptional = clientRepository.findClientByUser(userOptional.get());
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
-            client.setName(newClientDto.getName());
-            client.setCpf(newClientDto.getCpf());
-            client.setPhoneNumber(newClientDto.getPhoneNumber());
-            client.setSocialName(newClientDto.getSocialName());
-            client.setPreferences(newClientDto.getPreferences());
+            Optional.ofNullable(newClientDto.getName()).ifPresent(client::setName);
+            Optional.ofNullable(newClientDto.getCpf()).ifPresent(client::setCpf);
+            Optional.ofNullable(newClientDto.getPhoneNumber()).ifPresent(client::setPhoneNumber);
+            Optional.ofNullable(newClientDto.getSocialName()).ifPresent(client::setSocialName);
+            Optional.ofNullable(newClientDto.getPreferences()).ifPresent(client::setPreferences);
 
             clientRepository.save(client);// salva "client"
 
