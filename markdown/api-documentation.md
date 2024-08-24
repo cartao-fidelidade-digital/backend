@@ -1,7 +1,7 @@
 
 # Documentação API
 
-Endpoints são URLs específicas onde uma API recebe solicitações e retorna respostas, permitindo a comunicação entre diferentes partes de um sistema. Eles definem as operações que podem ser realizadas, como obter, criar, atualizar ou excluir dados. Abaixo, listamos as páginas para acessar a documentação dos endpoints de cada entidade no sistema Clubee.
+Nesse documento sera apresentado e detalhado todos os endpoints do Backend-Clubee e como utilizar cada um de forma correta. Endpoints são URLs onde uma API recebe solicitações e retorna respostas em formato Json, permitindo a comunicação entre diferentes partes de um sistema. Eles definem as operações que podem ser realizadas, como obter, criar, atualizar ou excluir dados. Abaixo, listamos as páginas para acessar a documentação dos endpoints de cada entidade no sistema Clubee.
 
 - [Client](#client)
 
@@ -10,37 +10,50 @@ Endpoints são URLs específicas onde uma API recebe solicitações e retorna re
 - [User](#user)
 
 <br>
-<br>
+
+
+## O que são Endpoints
+Endpoints são como "endereços" que você pode acessar para pedir ou enviar informações a um sistema, como um site ou uma aplicação. Abaixo sera listada algumas informações que um endpoint geralmente tem e pode aparecer na documentação:
+
+Entrada: é o endereço de onde quer acessar (ex: GET - localhost:8080/) é o tipo de ação que quer fazer (ex: GET, POST).
+
+Header: é onde você coloca informações extras, como um código de segurança para provar que você está autorizado a fazer a solicitação.
+
+Body: é o conteúdo que você envia para a API quando quer passar informações, como dados de um formulário.
+
+Saída: é o que a API devolve para você após processar a sua solicitação, podendo ser uma mensagem ou os dados que você pediu.
+
+Roles: definem as funções de cada usuario. Por exemplo, um endpoint pode ser acessível apenas por usuários com a função de admin, enquanto outro pode ser acessado por qualquer usuário autenticado.
 
 
 ## Autenticação
 
-Para realizar a autenticação e necessário fazer o login e armazenar o "access-token" e o "refresh-token" localmente no dispositivo do usuario.
+Na aplicação existem varios endpoints que precisam de autenticação. Para realizar a autenticação e necessário fazer o login e armazenar o "access-token" e o "refresh-token" localmente no dispositivo do usuario.
 
 - Token de Acesso: são usados para acessar os endpoits sem que precise se autenticar novamente. Geralmente "access-tokens" tem vida util de poucos minutos (ou horas).
-
+<br>
 
 - Token de Atualização: servem para obtém novos tokens de acesso sem refazer a autenticação. Esses tokens têm uma validade mais longa e são usados para renovar o "access token" quando este expira.
 
 
 <br>
 
-### Exemplo:
+### Exemplo de Autenticação:
+
+O exemplo abaixo segue com 4 informações basicas que a maioria dos enpoints vai ter como *entrada, header, body e saída*. 
 
 
-**Entrada**:
+- *Entrada*: `GET` - localhost:8080/
 
-`GET` - localhost:8080/
-
-*Header*:
+- *Header*:
 
 ```json
 {
-    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI...",
 }
 ```
 
-*Body*:
+- *Body*:
 ```json
 {
     "body-exemplo1":"value",
@@ -51,7 +64,7 @@ Para realizar a autenticação e necessário fazer o login e armazenar o "access
 
 
 
-*Saída*:
+- *Saída*:
 
 ```text
 saída realizada com sucesso
@@ -66,22 +79,23 @@ saída realizada com sucesso
 
 ### 1. Mostrar todos os Clientes.
 
-*Header*:
-```json
-{
-    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
-}
-```
+Este endpoint retorna a lista de todos os clientes cadastrados. 
+
 > role: admin
 
+##### Ex:
+
+- *Entrada*: `GET` - localhost:8080/api/users/client
+- *Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI...",
+}
+```
+
 <br>
 
-*Entrada*:
-`GET` - localhost:8080/api/users/client
-
-<br>
-
-*Saída*:
+- *Saída*:
 
 ```json
 [
@@ -122,12 +136,13 @@ saída realizada com sucesso
 
 ### 2. Cadastrar Cliente.
 
-*Entrada*:
-`POST` - localhost:8080/api/users/client/register
+Este endpoint permite o cadastro de um novo cliente. Alguns dados são obrigatorios como nome, email, senha e cpf.
 
-<br>
+##### Ex:
 
-*Body*:
+- *Entrada*: `POST` - localhost:8080/api/users/client/register
+
+- *Body*:
 
 ```json
 {
@@ -145,7 +160,7 @@ saída realizada com sucesso
 
 <br>
 
-*Saída*:
+- *Saída*:
 
 ```json
 {
@@ -159,22 +174,23 @@ saída realizada com sucesso
 
 ### 3. Editar Cliente.
 
-*Header*:
-```json
-{
-    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
-}
-```
+Este endpoint permite a edição dos dados de um cliente existente. Alguns dados são obrigatorios como nome e cpf.
+
 > role: client
 
+##### Ex:
+
+- *Entrada*: `PUT` - localhost:8080/api/users/client
+- *Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI...",
+}
+```
+
 <br>
 
-*Entrada*:
-`PUT` - localhost:8080/api/users/client
-
-<br>
-
-*Body*:
+- *Body*:
 
 ```json
 {
@@ -188,7 +204,7 @@ saída realizada com sucesso
 
 <br>
 
-*Saída*:
+- *Saída*:
 
 ```text
 Cliente editado com sucesso
@@ -198,21 +214,22 @@ Cliente editado com sucesso
 
 ### 4. Deleta Cliente.
 
-*Header*:
+Este endpoint permite a exclusão de um cliente.
+
+> role: client
+
+- *Entrada*: `DELETE` - localhost:8080/api/users/client
+
+- *Header*:
 ```json
 {
-    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI...",
 }
 ```
-> role: client
 
 <br>
 
-*Entrada*:
-
-`DELETE` - localhost:8080/api/users/client
-
-*Saída*:
+- *Saída*:
 ```text
 
 ```    
@@ -226,22 +243,24 @@ Cliente editado com sucesso
 
 ### 1. Mostrar todas as Empresas.
 
-*Header*:
-```json
-{
-    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
-}
-```
+Este endpoint retorna a lista de todas as empresas cadastradas. 
+
 > role: admin
 
+##### Ex:
+
+- *Entrada*: `GET` - localhost:8080/api/users/company
+
+- *Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI...",
+}
+```
+
 <br>
 
-*Entrada*:
-`GET` - localhost:8080/api/users/company
-
-<br>
-
-*Saída*:
+- *Saída*:
 
 ```json
 [
@@ -282,12 +301,13 @@ Cliente editado com sucesso
 
 ### 2. Cadastrar Empresa.
 
-*Entrada*:
-`POST` - localhost:8080/api/users/company/register
+Este endpoint permite o cadastro de uma nova empresa. Alguns dados são obrigatorios como nome da empresa, email e senha.
 
-<br>
+##### Ex:
 
-*Body*:
+- *Entrada*:`POST` - localhost:8080/api/users/company/register
+
+- *Body*:
 
 ```json
 {
@@ -305,7 +325,7 @@ Cliente editado com sucesso
 
 <br>
 
-*Saída*:
+- *Saída*:
 
 ```json
 {
@@ -319,22 +339,24 @@ Cliente editado com sucesso
 
 ### 3. Editar Empresa.
 
-*Header*:
-```json
-{
-    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
-}
-```
+Este endpoint permite a edição dos dados de uma empresa existente. Alguns dados são obrigatorios como nome da empresa.
+
 > role: company
 
+##### Ex:
+
+- *Entrada*: `PUT` - localhost:8080/api/users/company
+
+- *Header*:
+```json
+{
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI...",
+}
+```
+
 <br>
 
-*Entrada*:
-`PUT` - localhost:8080/api/users/company
-
-<br>
-
-*Body*:
+- *Body*:
 
 ```json
 {
@@ -348,7 +370,7 @@ Cliente editado com sucesso
 
 <br>
 
-*Saída*:
+- *Saída*:
 
 ```text
 Empresa editada com sucesso
@@ -358,22 +380,25 @@ Empresa editada com sucesso
 
 ### 4. Deleta Empresa.
 
-*Header*:
+Este endpoint permite a exclusão de uma empresa.
+
+> role: company
+
+##### Ex:
+
+- *Entrada*: `DELETE` - localhost:8080/api/users/company
+
+- *Header*:
 ```json
 {
     "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyI",
 }
 ```
-> role: company
+
 
 <br>
 
-*Entrada*:
-`DELETE` - localhost:8080/api/users/company
-
-<br>
-
-*Saída*:
+- *Saída*:
 
 ```text
 
@@ -387,12 +412,15 @@ Empresa editada com sucesso
 
 ### 1. Logar Usuário.
 
-*Entrada*:
-`POST` - localhost:8080/api/users/login
+Este endpoint permite que o usuario faça login na aplicação e receba um token de acesso. A saída desse endpoint tambem devolve um token de atualização (refresh-token) e a role do usuario. 
 
-<br>
+Obs: Em caso de duvidas leia o topico de [Autenticação](#autenticação) 
 
-*Body*:
+##### Ex:
+
+- *Entrada*: `POST` - localhost:8080/api/users/login
+
+- *Body*:
 
 ```json
 {
@@ -403,7 +431,7 @@ Empresa editada com sucesso
 
 <br>
 
-*Saída*:
+- *Saída*:
 
 ```json
 {
@@ -418,12 +446,15 @@ Empresa editada com sucesso
 
 ### 2. Novo Token.
 
-*Entrada*:
-`POST` - localhost:8080/api/users/newtoken
+Este endpoint permite que o token de acesso seja atualizado, para que não seja necessario o usuario logar novamente. Para fazer isso e necessario pegar o token de acesso expirado e o token de atualização, e enviar no "body" da requisição.
 
-<br>
+Obs: Em caso de duvidas leia o topico de [Autenticação](#autenticação) 
 
-*Body*:
+##### Ex:
+
+- *Entrada*: `POST` - localhost:8080/api/users/newtoken
+
+- *Body*:
 
 ```json
 {
@@ -434,7 +465,7 @@ Empresa editada com sucesso
 
 <br>
 
-*Saída*:
+- *Saída*:
 
 ```json
 {
@@ -448,12 +479,13 @@ Empresa editada com sucesso
 
 ### 3. Esqueci senha.
 
-*Entrada*:
-`POST` - localhost:8080/api/password/forgot
+Este endpoint enviará instruções para o email do usuario que deseja trocar sua senha. O envio de email pode demorar alguns minutos.
 
-<br>
+##### Ex:
 
-*Body*:
+- *Entrada*: `POST` - localhost:8080/api/password/forgot
+
+- *Body*:
 
 ```json
 {
@@ -463,7 +495,7 @@ Empresa editada com sucesso
 
 <br>
 
-*Saída*:
+- *Saída*:
 
 ```text
 Solicitação de redefinição realizada. Voce recebera um email em alguns minutos
@@ -471,12 +503,13 @@ Solicitação de redefinição realizada. Voce recebera um email em alguns minut
 
 ### 4. Resetar Senha.
 
-*Entrada*:
-`POST` - localhost:8080/api/password/reset
+Este endpoint permite que o usuario troque sua senha usando o token que ele recebeu por email. E necessario realizar o topico  "[Esqueci senha](#3-esqueci-senha)" para prossegir. 
 
-<br>
+##### Ex:
 
-*Body*:
+- *Entrada*: `POST` - localhost:8080/api/password/reset
+
+- *Body*:
 
 ```json
 {
@@ -487,7 +520,7 @@ Solicitação de redefinição realizada. Voce recebera um email em alguns minut
 
 <br>
 
-*Saída*:
+- *Saída*:
 
 ```text
 Senha alterada com sucesso
