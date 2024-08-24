@@ -15,7 +15,7 @@ public class EmailConsumer implements ChannelAwareMessageListener {
     private EmailService emailService;
 
     @Override
-    @RabbitListener(queues = "${email.queue.name}")
+    @RabbitListener(queues = "${email.password.queue.name}")
     public void onMessage(Message message, Channel channel) throws Exception {
         try {
             String body = new String(message.getBody());

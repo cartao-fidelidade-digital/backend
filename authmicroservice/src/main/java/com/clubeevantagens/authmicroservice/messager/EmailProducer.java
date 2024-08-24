@@ -11,14 +11,14 @@ public class EmailProducer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Value("${email.exchange.name}")
-    private String emailExchangeName;
+    @Value("${email.password.exchange.name}")
+    private String emailPasswordExchangeName;
 
-    @Value("${email.routing.key}")
-    private String emailRoutingKey;
+    @Value("${email.password.routing.key}")
+    private String emailPasswordRoutingKey;
 
     public void sendEmailMessage(String to, String subject, String text) {
         String message = to + ";" + subject + ";" + text;
-        rabbitTemplate.convertAndSend(emailExchangeName, emailRoutingKey, message); // Envia a mensagem
+        rabbitTemplate.convertAndSend(emailPasswordExchangeName, emailPasswordRoutingKey, message); // Envia a mensagem
     }
 }
