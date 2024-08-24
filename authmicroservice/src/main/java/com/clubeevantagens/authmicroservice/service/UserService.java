@@ -1,10 +1,9 @@
 package com.clubeevantagens.authmicroservice.service;
 
-import com.clubeevantagens.authmicroservice.model.Company;
+import com.clubeevantagens.authmicroservice.exception.UserDisabledException;
 import com.clubeevantagens.authmicroservice.model.dto.UserDto;
 import com.clubeevantagens.authmicroservice.security.UserDetail;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import com.clubeevantagens.authmicroservice.model.User;
 import com.clubeevantagens.authmicroservice.repository.ClientRepository;
 import com.clubeevantagens.authmicroservice.repository.UserRepository;
@@ -20,10 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -82,10 +79,12 @@ public class UserService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email ou Senha incorreta");
             }
 
-        } catch (UsernameNotFoundException e) {// email nao encontrado
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email ou Senha incorreta");
-        } catch (Exception e1){ // outros erros
-            e1.printStackTrace();
+        } catch (UsernameNotFoundException e) { // email nao encontrado
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (UserDisabledException e1){  // usuario desativado
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e1.getMessage());
+        } catch (Exception e2){ // outros erros
+            e2.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado");
         }
     }

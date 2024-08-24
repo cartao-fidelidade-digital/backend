@@ -58,6 +58,9 @@ public class User {
     @Column(name = "refresh_token_key")
     private int refreshToken;
 
+    @Column(name = "active")
+    private boolean active;
+
     // CRIA DATA DE "resetPasswordExpiryDate" PARA 48h SEGUINTES
     public LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
         LocalDateTime now = LocalDateTime.now();
