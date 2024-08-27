@@ -56,6 +56,7 @@ public class ClientService {
         }
         user.setEmail(clientDTO.getEmail());
         user.setPassword(user.encodePassword(clientDTO.getPassword()));
+        user.setActive(true);
 
         List<Role> roles = new ArrayList<>();
         roles.add(new Role(1L,"CLIENT",null));

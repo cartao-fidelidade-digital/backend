@@ -61,6 +61,7 @@ public class CompanyService {
 
         user.setEmail(companyDTO.getEmail());
         user.setPassword(user.encodePassword(companyDTO.getPassword()));// criptografa password
+        user.setActive(true);
 
         List<Role> roles = new ArrayList<>();
         roles.add(new Role(2L,"COMPANY",null));
