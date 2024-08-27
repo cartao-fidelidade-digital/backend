@@ -11,7 +11,7 @@ public class EmailProducer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Value("${email.password.exchange.name}")
+    @Value("${email.exchange.name}")
     private String emailPasswordExchangeName;
 
     @Value("${email.password.routing.key}")

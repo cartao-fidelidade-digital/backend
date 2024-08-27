@@ -11,16 +11,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
+
+    @Bean
+    // EXCHAGE EMAIL
+    public DirectExchange emailExchange(@Value("${email.exchange.name}") String emailExchangeName) {
+        return new DirectExchange(emailExchangeName); // Cria a exchange (ou distribuidora de mensagem) de email
+    }
+
     @Bean
     // FILA EMAIL-PASSWORD
     public Queue emailQueue(@Value("${email.password.queue.name}") String emailQueueName) {
         return new Queue(emailQueueName, true); // Cria a fila de email
-    }
-
-    @Bean
-    // EXCHAGE EMAIL-PASSWORD
-    public DirectExchange emailExchange(@Value("${email.password.exchange.name}") String emailExchangeName) {
-        return new DirectExchange(emailExchangeName); // Cria a exchange de email
     }
 
     @Bean
