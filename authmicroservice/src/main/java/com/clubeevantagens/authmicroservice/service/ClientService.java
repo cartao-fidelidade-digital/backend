@@ -34,13 +34,18 @@ public class ClientService {
     public ResponseEntity<?> registerClient(ClientDto clientDTO){
 
         // Verifica se o email já está cadastrado
-        if (userRepository.findUserByEmail(clientDTO.getEmail()).isPresent()) {
+        if (userRepository.existsByEmail(clientDTO.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email já cadastrado");
         }
 
         // Valida CPF se não for nulo
         if (clientDTO.getCpf() != null && !isValidCPF(clientDTO.getCpf())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido");
+        }
+
+        // Verifica se o CPF já está cadastrado
+        if (clientRepository.existsByCpf(clientDTO.getCpf())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF já cadastrado");
         }
 
 

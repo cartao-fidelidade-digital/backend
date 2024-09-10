@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long>{
     Optional<Company> findCompanyByUser(User user);
+    boolean existsByCpf(String cpf);
+    boolean existsByCnpj(String cnpj);
 }

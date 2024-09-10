@@ -33,7 +33,7 @@ public class CompanyService {
     public ResponseEntity<?> registerCompany(CompanyDto companyDTO){
 
         // Verifica se o email já está cadastrado
-        if (userRepository.findUserByEmail(companyDTO.getEmail()).isPresent()) {
+        if (userRepository.existsByEmail(companyDTO.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email já cadastrado");
         }
 
@@ -45,6 +45,16 @@ public class CompanyService {
         // Valida CNPJ se não for nulo
         if (companyDTO.getCnpj() != null && !isValidCNPJ(companyDTO.getCnpj())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CNPJ inválido");
+        }
+
+        // Verifica se o CPF já está cadastrado
+        if (companyRepository.existsByCpf(companyDTO.getCpf())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF já cadastrado");
+        }
+
+        // Verifica se o CNPJ já está cadastrado
+        if (companyRepository.existsByCnpj(companyDTO.getCnpj())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CNPJ já cadastrado");
         }
 
 

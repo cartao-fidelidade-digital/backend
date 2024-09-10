@@ -26,10 +26,10 @@ public class Company {
     @Column(name = "company_name", nullable = false, length = 150)
     private String companyName;
 
-    @Column(name = "cnpj")
+    @Column(name = "cnpj", unique = true)
     private String cnpj;
 
-    @Column(name = "cpf")
+    @Column(name = "cpf",unique = true)
     private String cpf;
 
     @Column(name = "type")
