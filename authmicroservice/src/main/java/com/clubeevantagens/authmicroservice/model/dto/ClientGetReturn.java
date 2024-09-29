@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -16,5 +18,11 @@ public class ClientGetReturn {
     private String phoneNumber;
     private String socialName;
     private String preferences;
+    private LocalDateTime nascimento;
+    private String photo;
+    private String cep;
+    private String endereco;
+    private String estado;
+    private String cidade;
 
 }
