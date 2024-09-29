@@ -50,6 +50,26 @@ public class Client {
     @Column(name = "preferences")
     private String preferences;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "nascimento")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
+    private LocalDateTime nascimento;
+
+    @Column(name = "photo")
+    private String photo;
+
+    @Column(name = "cep")
+    private String cep;
+
+    @Column(name = "endereco")
+    private String endereco;
+
+    @Column(name = "estado")
+    private String estado;
+
+    @Column(name = "cidade")
+    private String cidade;
+
     public LocalDateTime dateNow() {
         return LocalDateTime.now();
     }

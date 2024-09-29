@@ -81,6 +81,12 @@ public class ClientService {
         client.setDateTermsOfUse(client.dateNow());
         client.setSocialName(clientDTO.getSocialName());
         client.setPreferences(clientDTO.getPreferences());
+        client.setNascimento(clientDTO.getNascimento());
+        client.setPhoto(clientDTO.getPhoto());
+        client.setCep(clientDTO.getCep());
+        client.setEndereco(clientDTO.getEndereco());
+        client.setEstado(clientDTO.getEstado());
+        client.setCidade(clientDTO.getCidade());
 
         // Salva "Client" no banco
         clientRepository.save(client);
@@ -109,6 +115,12 @@ public class ClientService {
             cAux.setTermsOfUse(c.isTermsOfUse());
             cAux.setSocialName(c.getSocialName());
             cAux.setPreferences(c.getPreferences());
+            cAux.setNascimento(c.getNascimento());
+            cAux.setPhoto(c.getPhoto());
+            cAux.setCep(c.getCep());
+            cAux.setEndereco(c.getEndereco());
+            cAux.setEstado(c.getEstado());
+            cAux.setCidade(c.getCidade());
 
             retorno.add(cAux);
         }
@@ -142,6 +154,12 @@ public class ClientService {
             Optional.ofNullable(newClientDto.getPhoneNumber()).ifPresent(client::setPhoneNumber);
             Optional.ofNullable(newClientDto.getSocialName()).ifPresent(client::setSocialName);
             Optional.ofNullable(newClientDto.getPreferences()).ifPresent(client::setPreferences);
+            Optional.ofNullable(newClientDto.getNascimento()).ifPresent(client::setNascimento);
+            Optional.ofNullable(newClientDto.getPhoto()).ifPresent(client::setPhoto);
+            Optional.ofNullable(newClientDto.getCep()).ifPresent(client::setCep);
+            Optional.ofNullable(newClientDto.getEndereco()).ifPresent(client::setEndereco);
+            Optional.ofNullable(newClientDto.getEstado()).ifPresent(client::setEstado);
+            Optional.ofNullable(newClientDto.getCidade()).ifPresent(client::setCidade);
 
             clientRepository.save(client);// salva "client"
 
@@ -176,6 +194,12 @@ public class ClientService {
             payload.put("phoneNumber",client.getPhoneNumber());
             payload.put("socialName",client.getSocialName());
             payload.put("preferences", client.getPreferences());
+            payload.put("nascimento", client.getNascimento());
+            payload.put("photo", client.getPhoto());
+            payload.put("cep", client.getCep());
+            payload.put("endereco", client.getEndereco());
+            payload.put("estado", client.getEstado());
+            payload.put("cidade", client.getCidade());
             return ResponseEntity.ok(payload);
         } else {
             return ResponseEntity.notFound().build();
