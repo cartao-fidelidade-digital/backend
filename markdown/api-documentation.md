@@ -108,6 +108,12 @@ Este endpoint retorna a lista de todos os clientes cadastrados.
         "dateTermsOfUse": null,
         "socialName":"Joao Paulo",
         "preferences":"alimentação,papelaria,petshop",
+        "nascimento": "2024-04-29T12:30:45",
+        "photo": "photo",
+        "cep": "01001-000",
+        "endereco": "Praça da Sé",
+        "estado": "São Paulo",
+        "cidade": "São Paulo",
         "user": {
             "id": 1,
             "email": "joao@gmail.com",
@@ -123,6 +129,12 @@ Este endpoint retorna a lista de todos os clientes cadastrados.
         "dateTermsOfUse": null,
         "socialName":"Maria Joaquina",
         "preferences":"alimentação,papelaria,petshop",
+        "nascimento": "2024-04-29T12:30:45",
+        "photo": "photo",
+        "cep": "01001-000",
+        "endereco": "Praça da Sé",
+        "estado": "São Paulo",
+        "cidade": "São Paulo",
         "user": {
             "id": 2,
             "email": "maria@gmail.com",
@@ -154,7 +166,13 @@ Este endpoint permite o cadastro de um novo cliente. Alguns dados são obrigator
     "cpf":"154.599.850-72",
     "phone_number":"61 9 9999-9999",
     "socialName":"Joao Paulo",
-    "preferences":"alimentação,papelaria,petshop"
+    "preferences":"alimentação,papelaria,petshop",
+    "nascimento": "2024-04-29T12:30:45",
+    "photo": "photo",
+    "cep": "01001-000",
+    "endereco": "Praça da Sé",
+    "estado": "São Paulo",
+    "cidade": "São Paulo",
 }
 ```
 
@@ -198,7 +216,13 @@ Este endpoint permite a edição dos dados de um cliente existente. Alguns dados
     "cpf":"154.599.850-72",
     "phoneNumber":"61 9 9999-9999",
     "socialName":"Joao Paulo",
-    "preferences":"alimentação,papelaria,petshop"
+    "preferences":"alimentação,papelaria,petshop",
+    "nascimento": "2024-04-29T12:30:45",
+    "photo": "photo",
+    "cep": "01001-000",
+    "endereco": "Praça da Sé",
+    "estado": "São Paulo",
+    "cidade": "São Paulo",
 }
 ```
 
