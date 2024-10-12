@@ -174,6 +174,8 @@ public class ClientService {
     // DELETAR CLIENTE
     public ResponseEntity<?> deleteClient(Long idUser) {
         var userOptional = userRepository.findById(idUser);
+        var clientOptional = clientRepository.findClientByUser(userOptional.get());
+        clientRepository.deleteById(clientOptional.get().getId());
         if (userOptional.isPresent()) {
             userService.deleteUser(idUser);// deleta "user"
             return ResponseEntity.ok().build();
