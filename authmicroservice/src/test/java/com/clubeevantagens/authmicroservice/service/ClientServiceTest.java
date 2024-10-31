@@ -51,5 +51,22 @@ class ClientServiceTest {
     }
 
 
+    @Test
+    @DisplayName("Deve retornar erro caso CPF seja inválido ao criar cliente")
+    void shouldReturnErrorWhenCPFIsInvalidInRegisterClient() {
+        // Usuario
+        ClientDto clientDto = new ClientDto();
+        clientDto.setEmail("teste@gmail.com");
+        clientDto.setPassword("sfwofngDFGos1224@#");
+        clientDto.setCpf("987.987.879-78");
+
+        // Teste
+        ResponseEntity<?> response = clientService.registerClient(clientDto);
+
+        // validação do teste
+        assertEquals(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido"),response);
+    }
+
+
 
 }
