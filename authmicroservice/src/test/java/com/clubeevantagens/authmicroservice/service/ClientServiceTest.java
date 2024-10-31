@@ -1,0 +1,55 @@
+package com.clubeevantagens.authmicroservice.service;
+
+import com.clubeevantagens.authmicroservice.model.dto.ClientDto;
+import com.clubeevantagens.authmicroservice.repository.ClientRepository;
+import com.clubeevantagens.authmicroservice.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.Collection;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+class ClientServiceTest {
+
+    @InjectMocks
+    ClientService clientService;
+
+    @Mock
+    ClientRepository clientRepository;
+
+    @Mock
+    UserRepository userRepository;
+
+    @Test
+    @DisplayName("Deve retornar erro caso email ja exista ao criar cliente")
+    void shouldReturnErrorWhenEmailAlreadyExistsInRegisterClient() {
+
+        // Usuario
+        ClientDto clientDto = new ClientDto();
+        clientDto.setEmail("teste@gmail.com");
+        clientDto.setPassword("sfwofngDFGos1224@#");
+
+        // Simulaçao de resultado
+        Mockito.when(userRepository.existsByEmail(clientDto.getEmail())).thenReturn(true);
+
+        // Teste
+        ResponseEntity<?> response = clientService.registerClient(clientDto);
+
+        // validação do teste
+        assertEquals(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email já cadastrado"),response);
+    }
+
+
+
+}
