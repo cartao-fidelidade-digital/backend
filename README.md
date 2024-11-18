@@ -24,7 +24,7 @@ Para instruções de instalação, veja [instruções de instalação](./markdow
 
 Endpoints são URLs específicas onde uma API recebe solicitações e retorna respostas, permitindo a comunicação entre diferentes partes de um sistema. Eles definem as operações que podem ser realizadas, como obter, criar, atualizar ou excluir dados. Abaixo, listamos as páginas para acessar a documentação dos endpoints de cada entidade no sistema Clubee.
 
-Para mais detalhes sobre a API, veja a [documentação de API](./markdown/api-documentation.md).
+Para mais detalhes sobre a API, veja a [documentação de API](./markdown/api-documentation.md) ou acesse "http://localhost:8080/api-docs" ao iniciar a aplicação localmente.
 
 <br>
 <br>
