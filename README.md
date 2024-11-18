@@ -28,3 +28,28 @@ Para mais detalhes sobre a API, veja a [documentação de API](./markdown/api-do
 
 <br>
 <br>
+
+## Como funciona a Segurança do Backend?
+
+Algumas requisições exigem um nível maior de proteção. Abaixo, explicamos como a aplicação garante segurança e funcionalidade durante o uso pelo usuário.
+
+No backend, utilizamos dois tokens para autenticação: token de acesso e token de atualização.
+
+- O **token de acesso** é gerado no momento do login do usuário e utilizado para validar requisições. Ele funciona como um cracha, para que o usuario não precise se autenticar de novo.
+
+- O **token de atualização** é utilizado para renovar o token de acesso quando ele expira, garantindo que o usuário não precise fazer login novamente durante um determinado período.
+
+<br>
+
+Ambos os tokens são gerados no backend usando criptografia assimétrica, que funciona da seguinte forma:
+
+- O sistema criptografa os tokens com uma chave privada.
+- Os tokens são descriptografados utilizando uma chave pública.
+
+Essa abordagem aumenta a segurança dos dados e protege a integridade das operações realizadas pela aplicação.
+
+**Tecnologias Utilizadas:**
+
+Para garantir o funcionamento seguro do sistema, foi utilizado o Spring Security para identificar e gerenciar todas as requisições, além do JWT (JSON Web Token) para autenticar, assinar e validar cada requisição.
+
+Além disso, um filtro de Cross-Origin Resource Sharing (CORS) foi implementado para permitir requisições originadas de fontes específicas e confiáveis, assegurando a comunicação entre o frontend e o backend.
