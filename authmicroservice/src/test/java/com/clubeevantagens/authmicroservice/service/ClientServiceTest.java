@@ -67,6 +67,22 @@ class ClientServiceTest {
         assertEquals(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido"),response);
     }
 
+    @Test
+    @DisplayName("Deve retornar erro caso Email seja inválido ao criar cliente")
+    void shouldReturnErrorWhenEmailIsInvalidInRegisterClient(){
+        // Usuario
+        ClientDto clientDto = new ClientDto();
+        clientDto.setEmail("testegmailcom");
+        clientDto.setPassword("sfwofngDFGos1224@#");
+        clientDto.setCpf("808.425.610-64");
+
+        // Teste
+        ResponseEntity<?> response = clientService.registerClient(clientDto);
+
+        // validação do teste
+        assertEquals(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email inválido"),response);
+    }
+
 
 
 }
