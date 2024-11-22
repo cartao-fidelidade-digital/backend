@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/password/forgot").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/password/reset").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/reset-with-old-password").hasAnyAuthority("SCOPE_CLIENT","SCOPE_COMPANY")
                         .requestMatchers(HttpMethod.POST,"/api/users/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users/company/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users/client/register").permitAll()

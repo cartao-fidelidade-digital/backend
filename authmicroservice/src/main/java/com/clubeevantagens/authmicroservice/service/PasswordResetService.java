@@ -6,6 +6,7 @@ import com.clubeevantagens.authmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,6 +20,9 @@ public class PasswordResetService {
 
     @Autowired
     private EmailProducer emailProducer;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // ENVIAR "TOKEN" PARA EMAIL
     public ResponseEntity<?> sendPasswordResetTokenToEmail(String email)  {
@@ -84,6 +88,31 @@ public class PasswordResetService {
         }else{// token não existe
             return ResponseEntity.notFound().build();
         }
+
+    }
+
+
+    // RESETA COM SENHA ANTIGA
+    public ResponseEntity<?> resetPasswordWithOldPassword(Long idUser, String oldPassword, String newPassword) {
+
+        User user = new User();
+
+        // Valide Senha nova
+        if(!user.isValidPassword(newPassword) ){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sua senha precisa conter 8 a 20 caracteres incluindo números, letras maiúsculas e minúsculas e caracteres especiais.");
+        }
+
+        // pegue senha do banco
+        String atualPasswordEncrypt = userRepository.getPasswordUserById(idUser);
+
+        if(passwordEncoder.matches(oldPassword,atualPasswordEncrypt)){// compare "senha do banco" com "senha antiga"
+            userRepository.updatePasswordByIdUser(idUser,user.encodePassword(newPassword));
+
+            return ResponseEntity.ok().body("Senha alterada com sucesso");
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A senha antiga esta incorreta");
+        }
+
 
     }
 }

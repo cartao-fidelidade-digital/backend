@@ -25,4 +25,12 @@ public interface UserRepository extends JpaRepository<User, Long>{
     Optional<Integer> findRefreshTokenById(Long userId);
 
     boolean existsByEmail(String email);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET u.password = ?2 WHERE u.id = ?1")
+    void updatePasswordByIdUser(Long idUser, String newPassword);
+
+    @Query("SELECT u.password FROM User u WHERE u.id = ?1")
+    String getPasswordUserById(Long idUser);
 }
