@@ -1,3 +1,7 @@
+![novoLogo](https://github.com/user-attachments/assets/bb16311c-18d2-4c90-8f3e-37e52b810bcc)
+
+<br>
+
 # Clubee BackEnd
 
 O backend da Clubee é a espinha dorsal do sistema, responsável por gerenciar e fornecer acesso aos dados e funcionalidades para toda a aplicação. Desenvolvido utilizando tecnologias modernas e robustas, o backend é construído com foco na eficiência, segurança e escalabilidade.
@@ -53,3 +57,7 @@ Essa abordagem aumenta a segurança dos dados e protege a integridade das opera�
 Para garantir o funcionamento seguro do sistema, foi utilizado o Spring Security para identificar e gerenciar todas as requisições, além do JWT (JSON Web Token) para autenticar, assinar e validar cada requisição.
 
 Além disso, um filtro de Cross-Origin Resource Sharing (CORS) foi implementado para permitir requisições originadas de fontes específicas e confiáveis, assegurando a comunicação entre o frontend e o backend.
+
+## Autores
+
+- [@alessandropdasilva](https://github.com/alessandropdasilva)
