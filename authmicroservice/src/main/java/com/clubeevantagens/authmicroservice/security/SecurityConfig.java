@@ -69,6 +69,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/api/users/company").hasAnyAuthority("SCOPE_COMPANY")
                         .requestMatchers(HttpMethod.GET,"/api/users/client/all").hasAnyAuthority("SCOPE_ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/users/company/all").hasAnyAuthority("SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/api/users/client/review").hasAnyAuthority("SCOPE_CLIENT")
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
                 .httpBasic(Customizer.withDefaults())

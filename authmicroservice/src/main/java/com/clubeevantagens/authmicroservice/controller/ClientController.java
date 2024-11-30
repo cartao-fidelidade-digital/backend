@@ -1,9 +1,12 @@
 package com.clubeevantagens.authmicroservice.controller;
 import com.clubeevantagens.authmicroservice.document.ClientDocs;
+import com.clubeevantagens.authmicroservice.model.Client;
 import com.clubeevantagens.authmicroservice.model.dto.ClientDto;
 import com.clubeevantagens.authmicroservice.model.dto.ClientUpdateDto;
+import com.clubeevantagens.authmicroservice.model.dto.ReviewDto;
 import com.clubeevantagens.authmicroservice.security.JwtUtils;
 import com.clubeevantagens.authmicroservice.service.ClientService;
+import com.clubeevantagens.authmicroservice.service.ReviewsService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,9 @@ import java.util.Map;
 public class ClientController implements ClientDocs {
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private ReviewsService reviewsService;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -68,5 +74,14 @@ public class ClientController implements ClientDocs {
         return clientService.getClient(Long.valueOf(id));
     }
 
+    // CRIE AVALIAÇÃO
+    @PostMapping("/review")
+    public ResponseEntity<?> registerReview(@RequestHeader("Authorization") String authorization, @RequestBody ReviewDto reviewDto) {
+        var accessToken = authorization.substring(7);
+        var accessTokenMap = jwtUtils.extractAccessToken(accessToken);
+        var id = accessTokenMap.get("sub");
 
+        reviewDto.setClient(Long.valueOf(id));
+        return reviewsService.registerReview(reviewDto);
+    }
 }
