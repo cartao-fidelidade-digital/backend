@@ -58,6 +58,20 @@ Para garantir o funcionamento seguro do sistema, foi utilizado o Spring Security
 
 Além disso, um filtro de Cross-Origin Resource Sharing (CORS) foi implementado para permitir requisições originadas de fontes específicas e confiáveis, assegurando a comunicação entre o frontend e o backend.
 
+<br>
+<br>
+
+## Como funciona os disparos de Emails?
+
+Todas as requisições de envio de e-mails são encaminhadas para uma fila, onde as requisições são processadas até que a fila esteja vazia. A tecnologia utilizada para gerenciar essa fila é o RabbitMQ, que opera com o modelo de "publish" e "subscribe".
+
+<br>
+O RabbitMQ funciona como um intermediário entre quem envia as mensagens (produtores) e quem as processa (consumidores). Primeiro, as mensagens são enviadas para um ponto central chamado exchange. 
+Depois, a exchange direciona essas mensagens para filas específicas, que os consumidores verificam e processam. Isso garante que todas as mensagens sejam entregues e processadas de forma organizada e confiável.
+
+<br>
+<br>
+
 ## Autores
 
 - [@alessandropdasilva](https://github.com/alessandropdasilva)
