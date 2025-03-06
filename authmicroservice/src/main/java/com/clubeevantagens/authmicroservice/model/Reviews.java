@@ -29,6 +29,4 @@ public class Reviews {
     private LocalDateTime date;
 
     private boolean favorite;
-
-
 }
