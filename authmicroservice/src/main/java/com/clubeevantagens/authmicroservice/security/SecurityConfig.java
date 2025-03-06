@@ -52,7 +52,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(HttpMethod.GET,"/api-docs").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
-                        .requestMatchers("*", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/password/forgot").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/password/reset").permitAll()
@@ -70,8 +70,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/api/users/client/all").hasAnyAuthority("SCOPE_ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/users/company/all").hasAnyAuthority("SCOPE_ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/users/client/review").hasAnyAuthority("SCOPE_CLIENT")
+                        .requestMatchers(HttpMethod.GET, "/api/promotions/latest").hasAnyAuthority("SCOPE_CLIENT")
+                        .requestMatchers(HttpMethod.GET, "/api/promotions/most-rescued").hasAnyAuthority("SCOPE_CLIENT")
+                        .requestMatchers(HttpMethod.POST, "/api/promotions").hasAnyAuthority("SCOPE_CLIENT")
+                        .requestMatchers(HttpMethod.POST, "/api/favorites/promotions").hasAnyAuthority("SCOPE_CLIENT")
                         .anyRequest().authenticated())
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(
                         conf -> conf.jwt(
