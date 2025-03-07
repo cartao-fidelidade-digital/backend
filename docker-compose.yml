@@ -1,17 +1,13 @@
-# cd C:\Users\aless\Documents\CluBee
-# docker-compose up -d
-
 services:
   db:
     image: clubee/clubee.database:latest
     container_name: postgres-container
     restart: always
-    mem_limit: 1000m 
+    mem_limit: 1000m
     ports:
       - "5432:5432"
     networks:
       - rede-clubee
-    
 
   api:
     image: clubee/clubee.backend:latest
@@ -22,9 +18,10 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
     networks:
       - rede-clubee
-
 
 networks:
   rede-clubee:
