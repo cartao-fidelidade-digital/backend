@@ -1,5 +1,8 @@
 name: Docker release
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -29,7 +32,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/clubee.backend:${{ env.version }} -f authmicroservice/Dockerfile authmicroservice/
+          docker build --build-arg SPRING_PROFILES_ACTIVE=prod -t ${{ secrets.DOCKER_USERNAME }}/clubee.backend:${{ env.version }} -f authmicroservice/Dockerfile authmicroservice/
           docker tag ${{ secrets.DOCKER_USERNAME }}/clubee.backend:${{ env.version }} ${{ secrets.DOCKER_USERNAME }}/clubee.backend:latest
 
       - name: Push Docker Image
@@ -37,11 +40,13 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/clubee.backend:${{ env.version }}
           docker push ${{ secrets.DOCKER_USERNAME }}/clubee.backend:latest
 
+      - name: Set up GitHub token for tag push
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
       - name: Create new GitHub Tag
         run: |
-          GIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
-          GIT_AUTHOR_EMAIL=$(git log -1 --pretty=format:'%ae')
-          git config user.name "$GIT_AUTHOR_NAME"
-          git config user.email "$GIT_AUTHOR_EMAIL"
           git tag -a v${{ env.version }} -m "Release v${{ env.version }}"
           git push origin v${{ env.version }}
