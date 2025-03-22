@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
-    @Autowired
-    private JavaMailSender mailSender;
+
+    private final JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String from;
+
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public String sendSimpleEmail(String to, String subject, String text) {
 
@@ -24,9 +28,9 @@ public class EmailService {
             message.setText(text);
             mailSender.send(message);
 
-            return "Email enviado";
+            return "Email sent";
         }catch (Exception e){
-            return "Erro ao enviar email: "+ e.getMessage();
+            return "Error sending out email: "+ e.getMessage();
         }
     }
 }

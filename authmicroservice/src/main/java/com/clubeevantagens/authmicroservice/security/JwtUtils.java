@@ -1,20 +1,18 @@
 package com.clubeevantagens.authmicroservice.security;
 
+import com.clubeevantagens.authmicroservice.exception.security.InvalidTokenException;
+import com.clubeevantagens.authmicroservice.model.data.User;
+import com.clubeevantagens.authmicroservice.model.dto.response.TokenResponseDto;
+import com.clubeevantagens.authmicroservice.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.*;
+import org.springframework.stereotype.Component;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import com.clubeevantagens.authmicroservice.model.Role;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.jwt.*;
-import org.springframework.stereotype.Component;
+import java.util.*;
 
 @Component
 public class JwtUtils {
@@ -33,105 +31,46 @@ public class JwtUtils {
         this.jwtDecoder = jwtDecoder;
     }
 
-    // GERAR ACCESS TOKEN
-    public Map<String,String> generateAccessToken(UserDetails userDetails) {
+    public String generateToken(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
         Instant now = Instant.now();
 
-        var scopes = userDetails.getAuthorities()
-                .stream()
-                .map(grantedAuthority -> {
-                    Role role = new Role();
-                    role.setName(grantedAuthority.getAuthority());
-                    return role.getName();
-                })
-                .collect(Collectors.joining(" "));
+        List<String> roles = List.of(user.getRole().name());
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("clubee-security")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiry))
-                .subject(userDetails.getUsername())
-                .claim("scope", scopes)
+                .subject(user.getEmail())
+                .claim("id", user.getId())
+                .claim("roles", roles)
+                .claim("purpose", "access")
                 .build();
 
-        var accessToken = jwtEncoder.encode(
-                        JwtEncoderParameters.from(claims))
-                .getTokenValue();
-
-        Map<String,String> retorno = new HashMap<>();// retorno
-        retorno.put("accessToken", accessToken);
-        retorno.put("role", String.valueOf(scopes));
-
-        return retorno;
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    // EXTRAIR ACCESS TOKEN
-    public Map<String, String> extractAccessToken(String token) {
-        Jwt jwt = jwtDecoder.decode(token);
-
-        Map<String, String> payload = new HashMap<>();
-        payload.put("iss", jwt.getClaimAsString("iss"));
-        payload.put("sub", jwt.getSubject());
-        payload.put("exp", jwt.getExpiresAt().toString());
-        payload.put("iat", jwt.getIssuedAt().toString());
-        payload.put("scope", jwt.getClaimAsString("scope"));
-
-        return payload;
-    }
-
-    // GERAR REFRESH TOKEN
-    public Map<String,String> generateRefreshToken(String accessTokenExpired) {
-
-        var accessTokenMap = extractAccessToken(accessTokenExpired);// extrair "accessToken"
-        var userId = accessTokenMap.get("sub");
-        var accessIssuedAt = accessTokenMap.get("iat");
-        var accessExpiresAt = accessTokenMap.get("exp");
-
-        Instant now = Instant.now();
-
-        var key = 1000 + new Random().nextInt(9000);// Gera um número aleatório entre 1000 e 9999 para "Key"
-
-        var signatureRaw = ""+key + accessIssuedAt + accessExpiresAt;// assinatura crua
-        var signaruteEncript = new BCryptPasswordEncoder().encode(signatureRaw);// assinatura criptografada
-
+    public String generateRefreshToken(User user) {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("clubee-security")
-                .issuedAt(Instant.parse(accessIssuedAt))
-                .expiresAt(LocalDateTime.now().plusDays(expiryRefreshToken).toInstant(ZoneOffset.UTC))
-                .subject(userId)
-                .claim("key", key)
-                .claim("signature", signaruteEncript)
+                .subject(user.getId().toString())
+                .issuedAt(Instant.now())
+                .expiresAt(Instant.now().plusSeconds(expiryRefreshToken))
+                .claim("purpose", "refresh")
                 .build();
 
-        var refreshToken = jwtEncoder.encode(
-                        JwtEncoderParameters.from(claims))
-                .getTokenValue();
-
-
-        Map<String,String> retorno = new HashMap<>();// retorno
-        retorno.put("refreshToken", refreshToken);
-        retorno.put("key", String.valueOf(key));
-
-        return retorno;
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
+    public long getExpiresIn() {
+        return expiry;
+    }
 
-    // EXTRAIR REFRESH TOKEN
-    public Map<String, String> extractRefreshToken(String token) {
+    public Jwt validateRefreshToken(String token) {
         Jwt jwt = jwtDecoder.decode(token);
-
-        Map<String, String> payload = new HashMap<>();
-        payload.put("iss", jwt.getClaimAsString("iss"));
-        payload.put("sub", jwt.getSubject());
-        payload.put("exp", jwt.getExpiresAt().toString());
-        payload.put("iat", jwt.getIssuedAt().toString());
-        payload.put("key", jwt.getClaimAsString("key"));
-        payload.put("signature", jwt.getClaimAsString("signature"));
-
-        return payload;
+        if (!"refresh".equals(jwt.getClaim("purpose"))) {
+            throw new InvalidTokenException("Invalid resetPasswordToken purpose.");
+        }
+        return jwt;
     }
-
-
-
-
 }
